@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using _20210928.Data;
-using _20210928.Models;
+using Vapor.Data;
+using Vapor.Models;
 
-namespace _20210928.Controllers
+namespace Vapor.Controllers
 {
     public class ReviewsController : Controller
     {
@@ -43,6 +43,7 @@ namespace _20210928.Controllers
             return View(review);
         }
 
+     
         // GET: Reviews/Create
         public IActionResult Create()
         {
@@ -61,6 +62,8 @@ namespace _20210928.Controllers
             {
                 review.Id = Guid.NewGuid();
                 review.Item = _context.Items.FirstOrDefault(item => item.Id == review.Item.Id);
+                review.Date = DateTime.Now;
+                //_context.Items.FirstOrDefault(item => item.Id == review.Item.Id).Reviews.Add(review);
                 _context.Add(review);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -100,6 +103,7 @@ namespace _20210928.Controllers
             {
                 try
                 {
+                    review.Date = DateTime.Now;
                     _context.Update(review);
                     await _context.SaveChangesAsync();
                 }
@@ -127,26 +131,35 @@ namespace _20210928.Controllers
                 return NotFound();
             }
 
-            var review = await _context.Reviews
-                .FirstOrDefaultAsync(m => m.Id == id);
+            //var review = await _context.Reviews
+            //    .FirstOrDefaultAsync(m => m.Id == id);
+
+            var review = await _context.Reviews.FindAsync(id);
+            _context.Reviews.Remove(review);
+            await _context.SaveChangesAsync();
+            
+
+
             if (review == null)
             {
                 return NotFound();
             }
 
-            return View(review);
+            return RedirectToAction(nameof(Index));
+
+            //return View(review);
         }
 
         // POST: Reviews/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(Guid id)
-        {
-            var review = await _context.Reviews.FindAsync(id);
-            _context.Reviews.Remove(review);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> DeleteConfirmed(Guid id)
+        //{
+        //    var review = await _context.Reviews.FindAsync(id);
+        //    _context.Reviews.Remove(review);
+        //    await _context.SaveChangesAsync();
+        //    return RedirectToAction(nameof(Index));
+        //}
 
         private bool ReviewExists(Guid id)
         {

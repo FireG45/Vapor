@@ -1,11 +1,4 @@
-﻿@model IEnumerable<_20210928.Models.Review>
-
-@{
-    ViewData["Title"] = "Index";
-}
-
-<h1>Index</h1>
-
+﻿@model IEnumerable<Vapor.Models.Review>
 <p>
     <a asp-action="Create">Create New</a>
 </p>
@@ -21,11 +14,15 @@
             <th>
                 @Html.DisplayNameFor(model => model.Item)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Date)
+            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+        @foreach (var item in Model)
+        {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Text)
@@ -37,11 +34,15 @@
                 <a asp-controller="Items" asp-action="Details" asp-route-id="@item.Item.Id">@Html.DisplayFor(modelItem => item.Item.Name)</a>
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            
+            <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
-}
+        }
     </tbody>
 </table>

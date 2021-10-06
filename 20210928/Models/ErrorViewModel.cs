@@ -1,6 +1,6 @@
 using System;
 
-namespace _20210928.Models
+namespace Vapor.Models
 {
     public class ErrorViewModel
     {

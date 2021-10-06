@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using _20210928.Data;
+using Vapor.Data;
 
-namespace _20210928.Migrations
+namespace Vapor.Migrations
 {
     [DbContext(typeof(StoreContext))]
     [Migration("20210928154421_MakeItemRequired")]
@@ -18,7 +18,7 @@ namespace _20210928.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "5.0.9");
 
-            modelBuilder.Entity("_20210928.Models.Item", b =>
+            modelBuilder.Entity("Vapor.Models.Item", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -38,7 +38,7 @@ namespace _20210928.Migrations
                     b.ToTable("Items");
                 });
 
-            modelBuilder.Entity("_20210928.Models.Review", b =>
+            modelBuilder.Entity("Vapor.Models.Review", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -60,9 +60,9 @@ namespace _20210928.Migrations
                     b.ToTable("Reviews");
                 });
 
-            modelBuilder.Entity("_20210928.Models.Review", b =>
+            modelBuilder.Entity("Vapor.Models.Review", b =>
                 {
-                    b.HasOne("_20210928.Models.Item", "Item")
+                    b.HasOne("Vapor.Models.Item", "Item")
                         .WithMany("Reviews")
                         .HasForeignKey("ItemId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -71,7 +71,7 @@ namespace _20210928.Migrations
                     b.Navigation("Item");
                 });
 
-            modelBuilder.Entity("_20210928.Models.Item", b =>
+            modelBuilder.Entity("Vapor.Models.Item", b =>
                 {
                     b.Navigation("Reviews");
                 });

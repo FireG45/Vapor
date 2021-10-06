@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace _20210928.Migrations
+namespace Vapor.Migrations
 {
     public partial class Initial : Migration
     {

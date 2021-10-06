@@ -16,7 +16,7 @@
         "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation"
       }
     },
-    "_20210928": {
+    "Vapor": {
       "commandName": "Project",
       "dotnetRunMessages": "true",
       "launchBrowser": true,

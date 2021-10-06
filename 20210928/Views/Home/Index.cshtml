@@ -3,6 +3,11 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Menu</h1>
+    <div class="text-center">
+        <p class="text-center"><a asp-controller="Home" asp-action="Index">Home</a></p>
+        <p class="text-center"><a asp-controller="Items" asp-action="Index">Items</a></p>
+        <p class="text-center"><a asp-controller="Reviews" asp-action="Index">Reviews</a></p>
+        <p class="text-center"><a asp-controller="Tags" asp-action="Index">Tags</a></p>
+    </div>
 </div>

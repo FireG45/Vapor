@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using _20210928.Data;
-using _20210928.Models;
+using Vapor.Data;
+using Vapor.Models;
 using Microsoft.AspNetCore.Http;
 
-namespace _20210928.Controllers
+namespace Vapor.Controllers
 {
     public class ItemsController : Controller
     {
@@ -23,12 +23,22 @@ namespace _20210928.Controllers
         // GET: Items
         public async Task<IActionResult> Index()
         {
+            ViewData["Tags"] = _context.Tags.ToList();
+            ViewBag.F = "";
+            return View(await _context.Items.ToListAsync());
+        }
+        public async Task<IActionResult> Filter(string F)
+        {
+            ViewData["Tags"] = _context.Tags.ToList();
+            ViewData["F"] = F;
             return View(await _context.Items.ToListAsync());
         }
 
         // GET: Items/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
+            ViewData["Reviews"] = _context.Reviews.ToList();
+
             if (id == null)
             {
                 return NotFound();
@@ -47,6 +57,7 @@ namespace _20210928.Controllers
         // GET: Items/Create
         public IActionResult Create()
         {
+            ViewData["Tags"] = _context.Tags.ToList();
             return View();
         }
 
@@ -55,8 +66,9 @@ namespace _20210928.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,Price")] Item item)
+        public async Task<IActionResult> Create([Bind("Id,Name,Description,Price,Img,Tag1,Tag2,Tag3")] Item item)
         {
+
             if (ModelState.IsValid)
             {
                 item.Id = Guid.NewGuid();
@@ -70,6 +82,7 @@ namespace _20210928.Controllers
         // GET: Items/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
+            ViewData["Tags"] = _context.Tags.ToList();
             if (id == null)
             {
                 return NotFound();
@@ -88,7 +101,7 @@ namespace _20210928.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Name,Description,Price")] Item item)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Name,Description,Price,Img,Tag1,Tag2,Tag3")] Item item)
         {
             if (id != item.Id)
             {
@@ -160,13 +173,15 @@ namespace _20210928.Controllers
                 Review review = new Review
                 {
                     Text = collection["r.Text"],
-                    Score = Convert.ToInt32(collection["r.Score"])
+                    Score = Convert.ToInt32(collection["r.Score"]),
+                    Date = DateTime.Now
                 };
                 review.Id = Guid.NewGuid();
                 review.Item = _context.Items.FirstOrDefault(item => item.Id == id);
                 _context.Add(review);
+
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToRoute(new { controller = "Items", action = "Details", id = id });
             }
             return BadRequest();
         }

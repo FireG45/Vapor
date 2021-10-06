@@ -1,4 +1,4 @@
-﻿using _20210928.Models;
+﻿using Vapor.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -7,7 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace _20210928.Controllers
+namespace Vapor.Controllers
 {
     public class HomeController : Controller
     {

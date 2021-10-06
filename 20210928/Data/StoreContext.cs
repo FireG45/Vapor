@@ -1,11 +1,11 @@
-﻿using _20210928.Models;
+﻿using Vapor.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace _20210928.Data
+namespace Vapor.Data
 {
     public class StoreContext : DbContext
     {
@@ -25,5 +25,7 @@ namespace _20210928.Data
 
         public DbSet<Item> Items { get; set; }
         public DbSet<Review> Reviews { get; set; }
+        public DbSet<Tag> Tags { get; set; }
+        //public DbSet<FilterTag> FilterTags { get; set; }
     }
 }

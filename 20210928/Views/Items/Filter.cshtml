@@ -1,0 +1,55 @@
+﻿@model IEnumerable<Vapor.Models.Item>
+
+@{
+    ViewData["Title"] = ViewData["F"] as string;
+}
+@{
+    var tags = ViewData["Tags"] as List<Tag>;
+    string filtertag = ViewData["F"] as string;
+
+    SelectList tagsSelectList = tags != null ? new SelectList(tags, "tag", "tag") : null;
+}
+<p>
+    <a asp-controller="Items" asp-action="Index">Назад</a>
+    <div class="container">
+        Фильтр по тэгу: <a class="rounded" style="background:#2b2ec2; color:#ffffff"> @filtertag </a>
+    </div>
+</p>
+
+
+<table class="table">
+    <tbody>
+        @foreach (var item in Model)
+        {
+            if ((filtertag != "") && (filtertag == item.Tag1 || filtertag == item.Tag2 || filtertag == item.Tag3))
+            {
+                <tr>
+                    <td>
+                        <div class="container">
+                            <h5><a asp-action="Details" asp-route-id="@item.Id" class="text-left">@Html.DisplayFor(modelItem => item.Name)</a></h5>
+
+
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <a asp-action="Details" asp-route-id="@item.Id"><img class="img-thumbnail" src="@Html.DisplayFor(modelItem => item.Img)" /></a>
+
+                                    <a asp-controller="Items" asp-action="Filter" asp-route-F="@item.Tag1" class="rounded" style="background:#2b2ec2; color:#ffffff"> @item.Tag1 </a>,
+                                    <a asp-controller="Items" asp-action="Filter" asp-route-F="@item.Tag2" class="rounded" style="background:#2b2ec2; color:#ffffff"> @item.Tag2 </a>,
+                                    <a asp-controller="Items" asp-action="Filter" asp-route-F="@item.Tag3" class="rounded" style="background:#2b2ec2; color:#ffffff"> @item.Tag3 </a>
+
+                                </div>
+                                <div class="col-sm-4">
+                                    <p class="text-left">@item.Description</p>
+                                </div>
+                                <div class="col-sm-4">
+                                    <h4>@item.Price.ToString("c")</h4>
+                                    <p><a class=" btn btn-outline-danger" asp-controller="ShopCart" asp-action="addToCart" asp-route-id="">Добавить в корзину</a></p>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

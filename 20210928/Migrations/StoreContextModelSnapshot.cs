@@ -3,9 +3,9 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using _20210928.Data;
+using Vapor.Data;
 
-namespace _20210928.Migrations
+namespace Vapor.Migrations
 {
     [DbContext(typeof(StoreContext))]
     partial class StoreContextModelSnapshot : ModelSnapshot
@@ -16,13 +16,19 @@ namespace _20210928.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "5.0.9");
 
-            modelBuilder.Entity("_20210928.Models.Item", b =>
+            modelBuilder.Entity("Vapor.Models.Item", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
+                    b.Property<long>("AvgScore")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Description")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Img")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
@@ -31,15 +37,36 @@ namespace _20210928.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("TEXT");
 
+                    b.Property<long>("ScoreCount")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<long>("ScoreSumm")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Tag1")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Tag2")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Tag3")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Vid")
+                        .HasColumnType("TEXT");
+
                     b.HasKey("Id");
 
                     b.ToTable("Items");
                 });
 
-            modelBuilder.Entity("_20210928.Models.Review", b =>
+            modelBuilder.Entity("Vapor.Models.Review", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("Date")
                         .HasColumnType("TEXT");
 
                     b.Property<Guid>("ItemId")
@@ -49,6 +76,7 @@ namespace _20210928.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Text")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -58,9 +86,36 @@ namespace _20210928.Migrations
                     b.ToTable("Reviews");
                 });
 
-            modelBuilder.Entity("_20210928.Models.Review", b =>
+            modelBuilder.Entity("Vapor.Models.Tag", b =>
                 {
-                    b.HasOne("_20210928.Models.Item", "Item")
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("tag")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Tags");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("Tag");
+                });
+
+            modelBuilder.Entity("Vapor.Models.FilterTag", b =>
+                {
+                    b.HasBaseType("Vapor.Models.Tag");
+
+                    b.HasDiscriminator().HasValue("FilterTag");
+                });
+
+            modelBuilder.Entity("Vapor.Models.Review", b =>
+                {
+                    b.HasOne("Vapor.Models.Item", "Item")
                         .WithMany("Reviews")
                         .HasForeignKey("ItemId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -69,7 +124,7 @@ namespace _20210928.Migrations
                     b.Navigation("Item");
                 });
 
-            modelBuilder.Entity("_20210928.Models.Item", b =>
+            modelBuilder.Entity("Vapor.Models.Item", b =>
                 {
                     b.Navigation("Reviews");
                 });

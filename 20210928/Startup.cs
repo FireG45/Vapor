@@ -1,4 +1,4 @@
-using _20210928.Data;
+using Vapor.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace _20210928
+namespace Vapor
 {
     public class Startup
     {
