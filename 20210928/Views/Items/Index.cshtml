@@ -2,6 +2,11 @@
 
 @{
     ViewData["Title"] = "Index";
+
+    int pageCount = (ViewData["PageCount"] as int?) ?? 0;
+    int currentPage = (ViewData["CurrentPage"] as int?) ?? 1;
+    string sortBy = ViewData["SortBy"] as string ?? "";
+    string filterBy = ViewData["FilterBy"] as string ?? "";
 }
 @{
     var tags = ViewData["Tags"] as List<Tag>;
@@ -9,34 +14,51 @@
 
     SelectList tagsSelectList = tags != null ? new SelectList(tags, "Id", "tag") : null;
 }
-@{string filtertag = ""; }
 <p>
-    <a asp-action="Create">Create New</a>
-    <div class="container">
-        Отфильтровать по тэгу:
-        <div class="row">
-            <div class="col-sm-3">
-
-
-                <select class="form-control">
-                    @foreach (var t in tags)
-                    {
-                    <option href="/Items/Filter?F=@t.tag">@t.tag</option>
-                    }
-                </select>
-
-
-                <div class="col-sm-3">
-                    <a href="Items/Filter?F=@filtertag" class="btn btn-primary">Применить</a>
-                </div>
-            </div>
-        </div>
+    
 </p>
 
 <table class="table">
+    <thead>
+        <tr>
+            <th>
+                <div class="row">
+                    <div class="col-sm-4">
+                        @if (sortBy == "name")
+                        {<a asp-action="Index" asp-route-page="@(currentPage)" asp-route-filterBy="@filterBy" asp-route-sort-by="nameD">Название</a>}
+                        else
+                        {<a asp-action="Index" asp-route-page="@(currentPage)" asp-route-filterBy="@filterBy" asp-route-sort-by="name">Название</a>}
+                        @if (sortBy == "name")
+                        {<span>↓</span>}
+                        @if (sortBy == "nameD")
+                        {<span>↑</span>}
+                    </div>
+                    <div class="col-sm-4">
+
+                    </div>
+
+                    <div class="col-sm-4">
+                        @if (sortBy == "price")
+                        {
+                            <a asp-action="Index" asp-route-page="@(currentPage)" asp-route-filterBy="@filterBy" asp-route-sort-by="priceD">Цена</a>
+                        }
+                        else
+                        {
+                            <a asp-action="Index" asp-route-page="@(currentPage)" asp-route-filterBy="@filterBy" asp-route-sort-by="price">Цена</a>
+                        }
+                        @if (sortBy == "price")
+                        {<span>↓</span>}
+                        @if (sortBy == "priceD")
+                        {<span>↑</span>}
+                    </div>
+                </div>
+            </th>
+        </tr>
+    </thead>
     <tbody>
         @foreach (var item in Model)
         {
+            if (filterBy != "" && (item.Tag1 == filterBy || item.Tag2 == filterBy || item.Tag3 == filterBy))
             {
                 <tr>
                     <td>
@@ -48,9 +70,38 @@
                                 <div class="col-sm-4">
                                     <a asp-action="Details" asp-route-id="@item.Id"><img class="img-thumbnail" src="@Html.DisplayFor(modelItem => item.Img)" /></a>
 
-                                    <a asp-controller="Items" asp-action="Filter" asp-route-F="@item.Tag1" class="rounded" style="background:#2b2ec2; color:#ffffff"> @item.Tag1 </a>,
-                                    <a asp-controller="Items" asp-action="Filter" asp-route-F="@item.Tag2" class="rounded" style="background:#2b2ec2; color:#ffffff"> @item.Tag2 </a>,
-                                    <a asp-controller="Items" asp-action="Filter" asp-route-F="@item.Tag3" class="rounded" style="background:#2b2ec2; color:#ffffff"> @item.Tag3 </a>
+                                    <a asp-controller="Items" asp-route-filterBy="@item.Tag1" class="rounded" style="background:#2b2ec2; color:#ffffff"> @item.Tag1 </a>,
+                                    <a asp-controller="Items" asp-route-filterBy="@item.Tag2" class="rounded" style="background:#2b2ec2; color:#ffffff"> @item.Tag2 </a>,
+                                    <a asp-controller="Items" asp-route-filterBy="@item.Tag3" class="rounded" style="background:#2b2ec2; color:#ffffff"> @item.Tag3 </a>
+
+                                </div>
+                                <div class="col-sm-4">
+                                    <p class="text-left">@item.Description</p>
+                                </div>
+                                <div class="col-sm-4">
+                                    <h4>@item.Price.ToString("c")</h4>
+                                    <p><a class=" btn btn-outline-danger" asp-controller="ShopCart" asp-action="addToCart" asp-route-id="">Добавить в корзину</a></p>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            }
+            if (filterBy == "")
+            {
+                <tr>
+                    <td>
+                        <div class="container">
+                            <h5><a asp-action="Details" asp-route-id="@item.Id" class="text-left">@Html.DisplayFor(modelItem => item.Name)</a></h5>
+
+
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <a asp-action="Details" asp-route-id="@item.Id"><img class="img-thumbnail" src="@Html.DisplayFor(modelItem => item.Img)" /></a>
+
+                                    <a asp-controller="Items" asp-route-filterBy="@item.Tag1" class="rounded" style="background:#2b2ec2; color:#ffffff"> @item.Tag1 </a>,
+                                    <a asp-controller="Items" asp-route-filterBy="@item.Tag2" class="rounded" style="background:#2b2ec2; color:#ffffff"> @item.Tag2 </a>,
+                                    <a asp-controller="Items" asp-route-filterBy="@item.Tag3" class="rounded" style="background:#2b2ec2; color:#ffffff"> @item.Tag3 </a>
 
                                 </div>
                                 <div class="col-sm-4">
@@ -68,3 +119,18 @@
         }
     </tbody>
 </table>
+
+
+<div>
+    @if (currentPage > 1)
+    {<a class="btn btn-light" asp-action="Index" asp-route-page="1" asp-route-filterBy="@filterBy" asp-route-sort-by="@sortBy"> На первую </a>}
+    @if (currentPage > 1)
+    {<a class="btn btn-light" asp-action="Index" asp-route-page="@(currentPage - 1)" asp-route-filterBy="@filterBy" asp-route-sort-by="@sortBy"> Предыдущая страница </a>}
+
+    Страница @currentPage из @pageCount
+
+    @if (currentPage < pageCount)
+    {<a class="btn btn-light" asp-action="Index" asp-route-page="@(currentPage + 1)" asp-route-filterBy="@filterBy" asp-route-sort-by="@sortBy"> Следующая страница </a>}
+    @if (currentPage < pageCount)
+    {<a class="btn btn-light" asp-action="Index" asp-route-page="@pageCount" asp-route-filterBy="@filterBy" asp-route-sort-by="@sortBy"> На последнюю </a>}
+</div>

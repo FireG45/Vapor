@@ -21,6 +21,10 @@ namespace Vapor.Data
                 .HasOne(r => r.Item)
                 .WithMany(i => i.Reviews);
             base.OnModelCreating(builder);
+            builder.Entity<Item>()
+                .Property(i => i.Price)
+                .HasConversion<Double>();
+            base.OnModelCreating(builder);
         }
 
         public DbSet<Item> Items { get; set; }

@@ -21,12 +21,45 @@ namespace Vapor.Controllers
         }
 
         // GET: Items
-        public async Task<IActionResult> Index()
+
+        public async Task<IActionResult> Index(int page = 1, string filterBy = "", [FromQuery(Name = "sort-by")] string sortBy = "")
         {
+
+            IQueryable<Item> sortedItems = sortBy switch
+            {
+                "name" => _context.Items.OrderBy(item => item.Name),
+                "description" => _context.Items.OrderBy(item => item.Description),
+                "price" => _context.Items.OrderBy(item => item.Price),
+                "nameD" => _context.Items.OrderByDescending(item => item.Name),
+                "descriptionD" => _context.Items.OrderByDescending(item => item.Description),
+                "priceD" => _context.Items.OrderByDescending(item => item.Price),
+                _ => _context.Items
+            };
+
+            int pageSize;
+            if (filterBy == "")
+                pageSize = 10;
+            else
+                pageSize = _context.Items.Count();
+
+            int pageCount = (int)Math.Ceiling(_context.Items.Count() / (double)pageSize);
+
+
+
+
             ViewData["Tags"] = _context.Tags.ToList();
-            ViewBag.F = "";
-            return View(await _context.Items.ToListAsync());
+            ViewData["FilterBy"] = filterBy;
+
+            ViewData["PageCount"] = pageCount;
+            ViewData["CurrentPage"] = page;
+            ViewData["SortBy"] = sortBy;
+
+            return View(await sortedItems
+                .Skip(pageSize * (page - 1))
+                .Take(pageSize)
+                .ToListAsync());
         }
+
         public async Task<IActionResult> Filter(string F)
         {
             ViewData["Tags"] = _context.Tags.ToList();
