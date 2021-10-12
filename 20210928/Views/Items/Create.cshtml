@@ -7,8 +7,10 @@
 
 @{
     var tags = ViewData["Tags"] as List<Tag>;
-    SelectList tagsSelectList = tags != null ? new SelectList(tags, "tag" ,"tag") : null;
+    SelectList tagsSelectList = tags != null ? new SelectList(tags, "tag" ,"tag") : null;  
 }
+
+
 
 <h1>Create</h1>
 

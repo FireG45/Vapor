@@ -62,28 +62,7 @@
             {
                 <tr>
                     <td>
-                        <div class="container">
-                            <h5><a asp-action="Details" asp-route-id="@item.Id" class="text-left">@Html.DisplayFor(modelItem => item.Name)</a></h5>
-
-
-                            <div class="row">
-                                <div class="col-sm-4">
-                                    <a asp-action="Details" asp-route-id="@item.Id"><img class="img-thumbnail" src="@Html.DisplayFor(modelItem => item.Img)" /></a>
-
-                                    <a asp-controller="Items" asp-route-filterBy="@item.Tag1" class="rounded" style="background:#2b2ec2; color:#ffffff"> @item.Tag1 </a>,
-                                    <a asp-controller="Items" asp-route-filterBy="@item.Tag2" class="rounded" style="background:#2b2ec2; color:#ffffff"> @item.Tag2 </a>,
-                                    <a asp-controller="Items" asp-route-filterBy="@item.Tag3" class="rounded" style="background:#2b2ec2; color:#ffffff"> @item.Tag3 </a>
-
-                                </div>
-                                <div class="col-sm-4">
-                                    <p class="text-left">@item.Description</p>
-                                </div>
-                                <div class="col-sm-4">
-                                    <h4>@item.Price.ToString("c")</h4>
-                                    <p><a class=" btn btn-outline-danger" asp-controller="ShopCart" asp-action="addToCart" asp-route-id="">Добавить в корзину</a></p>
-                                </div>
-                            </div>
-                        </div>
+                        <partial name="OneItem" model="item" />
                     </td>
                 </tr>
             }
@@ -91,28 +70,7 @@
             {
                 <tr>
                     <td>
-                        <div class="container">
-                            <h5><a asp-action="Details" asp-route-id="@item.Id" class="text-left">@Html.DisplayFor(modelItem => item.Name)</a></h5>
-
-
-                            <div class="row">
-                                <div class="col-sm-4">
-                                    <a asp-action="Details" asp-route-id="@item.Id"><img class="img-thumbnail" src="@Html.DisplayFor(modelItem => item.Img)" /></a>
-
-                                    <a asp-controller="Items" asp-route-filterBy="@item.Tag1" class="rounded" style="background:#2b2ec2; color:#ffffff"> @item.Tag1 </a>,
-                                    <a asp-controller="Items" asp-route-filterBy="@item.Tag2" class="rounded" style="background:#2b2ec2; color:#ffffff"> @item.Tag2 </a>,
-                                    <a asp-controller="Items" asp-route-filterBy="@item.Tag3" class="rounded" style="background:#2b2ec2; color:#ffffff"> @item.Tag3 </a>
-
-                                </div>
-                                <div class="col-sm-4">
-                                    <p class="text-left">@item.Description</p>
-                                </div>
-                                <div class="col-sm-4">
-                                    <h4>@item.Price.ToString("c")</h4>
-                                    <p><a class=" btn btn-outline-danger" asp-controller="ShopCart" asp-action="addToCart" asp-route-id="">Добавить в корзину</a></p>
-                                </div>
-                            </div>
-                        </div>
+                        <partial name="OneItem" model="item" />
                     </td>
                 </tr>
             }
@@ -125,12 +83,12 @@
     @if (currentPage > 1)
     {<a class="btn btn-light" asp-action="Index" asp-route-page="1" asp-route-filterBy="@filterBy" asp-route-sort-by="@sortBy"> На первую </a>}
     @if (currentPage > 1)
-    {<a class="btn btn-light" asp-action="Index" asp-route-page="@(currentPage - 1)" asp-route-filterBy="@filterBy" asp-route-sort-by="@sortBy"> Предыдущая страница </a>}
+    {<a class="btn btn-light" asp-action="Index" asp-route-page="@(currentPage - 1)" asp-route-filterBy="@filterBy" asp-route-sort-by="@sortBy"> 🠔 </a>}
 
     Страница @currentPage из @pageCount
 
     @if (currentPage < pageCount)
-    {<a class="btn btn-light" asp-action="Index" asp-route-page="@(currentPage + 1)" asp-route-filterBy="@filterBy" asp-route-sort-by="@sortBy"> Следующая страница </a>}
+    {<a class="btn btn-light" asp-action="Index" asp-route-page="@(currentPage + 1)" asp-route-filterBy="@filterBy" asp-route-sort-by="@sortBy"> ➞ </a>}
     @if (currentPage < pageCount)
     {<a class="btn btn-light" asp-action="Index" asp-route-page="@pageCount" asp-route-filterBy="@filterBy" asp-route-sort-by="@sortBy"> На последнюю </a>}
 </div>

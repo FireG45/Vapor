@@ -30,6 +30,7 @@ namespace Vapor.Data
         public DbSet<Item> Items { get; set; }
         public DbSet<Review> Reviews { get; set; }
         public DbSet<Tag> Tags { get; set; }
+        public DbSet<Item> ShopCart { get; set; }
         //public DbSet<FilterTag> FilterTags { get; set; }
     }
 }
