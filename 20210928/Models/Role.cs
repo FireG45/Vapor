@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Vapor.Models
 {
-    public class UserRole
+    public class Role
     {
-        public UserRole()
+        public Role()
         {
             Users = new List<string>();
         }
