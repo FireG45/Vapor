@@ -7,11 +7,12 @@
     <div class="text-center">
         <p class="text-center"><a asp-controller="Home" asp-action="Index">Home</a></p>
         <p class="text-center"><a asp-controller="Items" asp-action="Index">Items</a></p>
-        @if(User.IsInRole("Admin"))
+        @if (User.IsInRole("Admin"))
         {
-        <p class="text-center"><a asp-controller="Items" asp-action="Create">Create Item</a></p>
-        <p class="text-center"><a asp-controller="Reviews" asp-action="Index">Reviews</a></p>
-        <p class="text-center"><a asp-controller="Tags" asp-action="Index">Tags</a></p>
+            <p class="text-center"><a asp-controller="Items" asp-action="Create">Create Item</a></p>
+            <p class="text-center"><a asp-controller="Reviews" asp-action="Index">Reviews</a></p>
+            <p class="text-center"><a asp-controller="Tags" asp-action="Index">Tags</a></p>
+            <p class="text-center"><a asp-controller="Admin" asp-action="RoleList">Roles</a></p>
         }
 
     </div>

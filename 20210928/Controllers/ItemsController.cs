@@ -8,16 +8,25 @@ using Microsoft.EntityFrameworkCore;
 using Vapor.Data;
 using Vapor.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Vapor.Areas.Identity.Data;
+using Microsoft.AspNetCore.Authorization;
+using System.Text.Json;
 
 namespace Vapor.Controllers
 {
     public class ItemsController : Controller
     {
         private readonly StoreContext _context;
+        private readonly UsersContext _ucontext;
+        private readonly SignInManager<User> signInManager;
+        User user;
 
-        public ItemsController(StoreContext context)
+        public ItemsController(StoreContext context, UsersContext ucontext, SignInManager<User> signInManager)
         {
             _context = context;
+            _ucontext = ucontext;
+            this.signInManager = signInManager;
         }
 
         // GET: Items
@@ -53,6 +62,23 @@ namespace Vapor.Controllers
             ViewData["PageCount"] = pageCount;
             ViewData["CurrentPage"] = page;
             ViewData["SortBy"] = sortBy;
+
+            user = await signInManager.UserManager.GetUserAsync(User);
+            List<Item> shoplist;
+            if (user?.ShopCart != null)
+                shoplist = JsonSerializer.Deserialize<List<Item>>(user.ShopCart);
+            else
+                shoplist = new();
+
+            ViewBag.SCart = shoplist;
+
+            List<Item> wlist;
+            if (user?.WishList != null)
+                wlist = JsonSerializer.Deserialize<List<Item>>(user.WishList);
+            else
+                wlist = new();
+
+            ViewBag.Wlist = wlist;
 
             return View(await sortedItems
                 .Skip(pageSize * (page - 1))
@@ -99,6 +125,7 @@ namespace Vapor.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize("Admin")]
         public async Task<IActionResult> Create([Bind("Id,Name,Description,Price,Img,Tag1,Tag2,Tag3")] Item item)
         {
 
@@ -113,6 +140,7 @@ namespace Vapor.Controllers
         }
 
         // GET: Items/Edit/5
+        [Authorize("Admin")]
         public async Task<IActionResult> Edit(Guid? id)
         {
             ViewData["Tags"] = _context.Tags.ToList();
@@ -134,6 +162,7 @@ namespace Vapor.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize("Admin")]
         public async Task<IActionResult> Edit(Guid id, [Bind("Id,Name,Description,Price,Img,Tag1,Tag2,Tag3")] Item item)
         {
             if (id != item.Id)
@@ -165,6 +194,7 @@ namespace Vapor.Controllers
         }
 
         // GET: Items/Delete/5
+        [Authorize("Admin")]
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)
@@ -185,6 +215,7 @@ namespace Vapor.Controllers
         // POST: Items/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             var item = await _context.Items.FindAsync(id);
@@ -199,6 +230,7 @@ namespace Vapor.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> AddReview(Guid id, IFormCollection collection)
         {
             if (ModelState.IsValid)
@@ -217,6 +249,63 @@ namespace Vapor.Controllers
                 return RedirectToRoute(new { controller = "Items", action = "Details", id = id });
             }
             return BadRequest();
+        }
+
+        [Authorize]
+        public async Task<IActionResult> ToCart(Guid Id)
+        {
+            user = await signInManager.UserManager.GetUserAsync(User);
+            var item = _context.Items.FirstOrDefaultAsync(m => m.Id == Id).Result;
+            List<Item> shoplist;
+            if (user.ShopCart != null)
+                shoplist = JsonSerializer.Deserialize<List<Item>>(user.ShopCart);
+            else
+                shoplist = new();
+            shoplist.Add(item);
+            user.ShopCart = JsonSerializer.Serialize<List<Item>>(shoplist);
+            _ucontext.SaveChanges();
+            return RedirectToAction(nameof(Index));
+        }
+        public async Task<IActionResult> DeleteFromCart(Guid Id)
+        {
+            user = await signInManager.UserManager.GetUserAsync(User);
+            var item = _context.Items.FirstOrDefaultAsync(m => m.Id == Id).Result;
+            List<Item> shoplist;
+            if (user.ShopCart != null)
+                shoplist = JsonSerializer.Deserialize<List<Item>>(user.ShopCart);
+            else
+                shoplist = new();
+            shoplist.Remove(shoplist.Find(m => m.Id==Id));
+            user.ShopCart = JsonSerializer.Serialize<List<Item>>(shoplist);
+            _ucontext.SaveChanges();
+            return RedirectToAction(nameof(ShopCart));
+        }
+        [Authorize]
+        public async Task<IActionResult> ToWlist(Guid Id)
+        {
+            user = await signInManager.UserManager.GetUserAsync(User);
+            var item = _context.Items.FirstOrDefaultAsync(m => m.Id == Id).Result;
+            List<Item> wlist;
+            if (user.WishList != null)
+                wlist = JsonSerializer.Deserialize<List<Item>>(user.WishList);
+            else
+                wlist = new();
+            wlist.Add(item);
+            user.WishList = JsonSerializer.Serialize<List<Item>>(wlist);
+            _ucontext.SaveChanges();
+            return RedirectToAction(nameof(Index));
+        }
+        public async Task<IActionResult> ShopCart()
+        {
+            user = await signInManager.UserManager.GetUserAsync(User);
+            List<Item> items;
+
+            if (user.ShopCart != null)
+                items = JsonSerializer.Deserialize<List<Item>>(user.ShopCart);
+            else
+                items = new();
+
+            return View(items);
         }
     }
 }

@@ -51,6 +51,8 @@ namespace Vapor.Controllers
 
         public IActionResult Index()
         {
+            ViewBag.RoleManager = roleManager;
+            ViewBag.UserManager = userManager;
             return View(_context.Users);
         }
         public IActionResult RoleList()

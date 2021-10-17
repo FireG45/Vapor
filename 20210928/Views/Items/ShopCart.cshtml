@@ -1,0 +1,26 @@
+﻿@model IEnumerable<Item>
+@{
+    decimal sum = 0;
+}
+<h2>Корзина</h2>
+<table class="table">
+    <tbody>
+        @foreach (var item in Model)
+        {
+            sum += item.Price;
+            <tr>
+                <td>
+                    <div class="container">
+
+                        <div class="row">
+                            <partial name="OneItemShopCart" model="item" />
+                        </div>
+
+                    </div>
+                </td>
+            </tr>
+        }
+
+    </tbody>
+</table>
+<h4 class="text-right">К оплате : @sum.ToString("c")</h4>

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Vapor.Areas.Identity.Data;
+using Vapor.Models;
 
 namespace Vapor.Data
 {
@@ -24,4 +25,5 @@ namespace Vapor.Data
             // Add your customizations after calling base.OnModelCreating(builder);
         }
     }
+    
 }

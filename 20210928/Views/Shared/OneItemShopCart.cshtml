@@ -7,18 +7,16 @@
         <div class="col-sm-4">
             <a asp-action="Details" asp-route-id="@Model.Id"><img class="img-thumbnail" src="@Html.DisplayFor(modelItem => Model.Img)" /></a>
 
-            <a asp-controller="Items" asp-route-filterBy="@Model.Tag1" class="rounded" style="background:#2b2ec2; color:#ffffff"> @Model.Tag1 </a>,
-            <a asp-controller="Items" asp-route-filterBy="@Model.Tag2" class="rounded" style="background:#2b2ec2; color:#ffffff"> @Model.Tag2 </a>,
-            <a asp-controller="Items" asp-route-filterBy="@Model.Tag3" class="rounded" style="background:#2b2ec2; color:#ffffff"> @Model.Tag3 </a>
-
+            <a asp-controller="Items" asp-route-filterBy="@Model.Tag1" class="rounded" style="background: #008aff; color: #ffffff"> @Model.Tag1 </a>,
+            <a asp-controller="Items" asp-route-filterBy="@Model.Tag2" class="rounded" style="background: #008aff; color: #ffffff"> @Model.Tag2 </a>,
+            <a asp-controller="Items" asp-route-filterBy="@Model.Tag3" class="rounded" style="background: #008aff; color: #ffffff"> @Model.Tag3 </a>
         </div>
-
         <div class="col-sm-4">
             <p class="text-left">@Model.Description</p>
         </div>
-
         <div class="col-sm-4">
             <h4>@Model.Price.ToString("c")</h4>
+            <p><a class=" btn btn-outline-danger" asp-controller="Items" asp-action="DeleteFromCart" asp-route-Id="@Model">Удалить из корзины</a></p>
         </div>
     </div>
 </div>

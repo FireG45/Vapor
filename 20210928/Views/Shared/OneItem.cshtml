@@ -1,4 +1,11 @@
 ﻿@model Item
+@using Vapor.Data
+@{ 
+    var shopcart = ViewBag.SCart as List<Item>;
+    var wishlist = ViewBag.Wlist as List<Item>;
+   
+}
+@inject StoreContext _context
 <div class="container">
     <h5><a asp-action="Details" asp-route-id="@Model.Id" class="text-left">@Html.DisplayFor(modelItem => Model.Name)</a></h5>
 
@@ -7,17 +14,31 @@
         <div class="col-sm-4">
             <a asp-action="Details" asp-route-id="@Model.Id"><img class="img-thumbnail" src="@Html.DisplayFor(modelItem => Model.Img)" /></a>
 
-            <a asp-controller="Items" asp-route-filterBy="@Model.Tag1" class="rounded" style="background:#2b2ec2; color:#ffffff"> @Model.Tag1 </a>,
-            <a asp-controller="Items" asp-route-filterBy="@Model.Tag2" class="rounded" style="background:#2b2ec2; color:#ffffff"> @Model.Tag2 </a>,
-            <a asp-controller="Items" asp-route-filterBy="@Model.Tag3" class="rounded" style="background:#2b2ec2; color:#ffffff"> @Model.Tag3 </a>
-
+            <a asp-controller="Items" asp-route-filterBy="@Model.Tag1" class="rounded" style="background: #008aff; color: #ffffff"> @Model.Tag1 </a>,
+            <a asp-controller="Items" asp-route-filterBy="@Model.Tag2" class="rounded" style="background: #008aff; color: #ffffff"> @Model.Tag2 </a>,
+            <a asp-controller="Items" asp-route-filterBy="@Model.Tag3" class="rounded" style="background: #008aff; color: #ffffff"> @Model.Tag3 </a>
         </div>
         <div class="col-sm-4">
             <p class="text-left">@Model.Description</p>
         </div>
         <div class="col-sm-4">
             <h4>@Model.Price.ToString("c")</h4>
-            <p><a class=" btn btn-outline-danger" asp-controller="ShopCart" asp-action="addToCart" asp-route-id="Model">Добавить в корзину</a></p>
+            @if (Model.Id != shopcart.FirstOrDefault(m => m.Id == Model.Id)?.Id)
+            {
+                <p><a class=" btn btn-outline-danger" asp-controller="Items" asp-action="ToCart" asp-route-Id="@Model">Добавить в корзину</a></p>
+            }
+            else
+            {
+                <p><a class=" btn btn-outline-danger" asp-controller="Items" asp-action="ShopCart" asp-route-Id="@Model">Перейти к корзине</a></p>
+            }
+            @if (Model.Id != wishlist.FirstOrDefault(m => m.Id == Model.Id)?.Id)
+            {
+                <p><a class=" btn btn-outline-info" asp-controller="Items" asp-action="ToWlist" asp-route-Id="@Model">Добавить в желаемое</a></p>
+            }
+            else
+            {
+                <p><a class=" btn btn-outline-info" asp-controller="Items" asp-action="Whishlist" asp-route-Id="@Model">Перейти в желаемое</a></p>
+            }
         </div>
     </div>
 </div>
