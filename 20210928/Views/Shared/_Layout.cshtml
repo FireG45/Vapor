@@ -12,9 +12,9 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
-<body>
+<body style="background-color:#181A1B">
     <header>
-        <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+        <nav class="navbar navbar-expand-md navbar-dark fixed-top" style="background-color:#2C2F31">
             <div class="container-fluid">
                 <a class="navbar-brand" asp-controller="Home" asp-action="Index">Vapor</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
@@ -45,16 +45,16 @@
         </nav>-->
     </header>
 
-    <div class="container">
-        <main role="main" class="m-5 p-1">
+    <div class="container ">
+        <main role="main" class="m-5 p-1 text-white">
             @RenderBody()
         </main>
     </div>
 
 
     <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2021 - Vapor - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        <div class="container ">
+            &copy; 2021 - Vapor
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

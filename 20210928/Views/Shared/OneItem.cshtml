@@ -6,20 +6,20 @@
    
 }
 @inject StoreContext _context
-<div class="container">
+<div class="container  text-white">
     <h5><a asp-action="Details" asp-route-id="@Model.Id" class="text-left">@Html.DisplayFor(modelItem => Model.Name)</a></h5>
 
 
     <div class="row">
         <div class="col-sm-4">
-            <a asp-action="Details" asp-route-id="@Model.Id"><img class="img-thumbnail" src="@Html.DisplayFor(modelItem => Model.Img)" /></a>
+            <a asp-action="Details" asp-route-id="@Model.Id"><img class="img-thumbnail" style="background-color: #181A1B;" src="@Html.DisplayFor(modelItem => Model.Img)" /></a>
 
-            <a asp-controller="Items" asp-route-filterBy="@Model.Tag1" class="rounded" style="background: #008aff; color: #ffffff"> @Model.Tag1 </a>,
-            <a asp-controller="Items" asp-route-filterBy="@Model.Tag2" class="rounded" style="background: #008aff; color: #ffffff"> @Model.Tag2 </a>,
-            <a asp-controller="Items" asp-route-filterBy="@Model.Tag3" class="rounded" style="background: #008aff; color: #ffffff"> @Model.Tag3 </a>
+            <a asp-controller="Items" asp-route-filterBy="@Model.Tag1" class="rounded" style="background: #008aff; color: black"> @Model.Tag1 </a>,
+            <a asp-controller="Items" asp-route-filterBy="@Model.Tag2" class="rounded" style="background: #008aff; color: black"> @Model.Tag2 </a>,
+            <a asp-controller="Items" asp-route-filterBy="@Model.Tag3" class="rounded" style="background: #008aff; color: black"> @Model.Tag3 </a>
         </div>
-        <div class="col-sm-4">
-            <p class="text-left">@Model.Description</p>
+        <div class="col-sm-4 ">
+            <p class="text-left ">@Model.Description</p>
         </div>
         <div class="col-sm-4">
             <h4>@Model.Price.ToString("c")</h4>

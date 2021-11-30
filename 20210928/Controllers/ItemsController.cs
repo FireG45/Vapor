@@ -13,6 +13,7 @@ using Vapor.Areas.Identity.Data;
 using Microsoft.AspNetCore.Authorization;
 using System.Text.Json;
 
+
 namespace Vapor.Controllers
 {
     public class ItemsController : Controller
@@ -125,11 +126,11 @@ namespace Vapor.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize("Admin")]
+        [Authorize]
         public async Task<IActionResult> Create([Bind("Id,Name,Description,Price,Img,Tag1,Tag2,Tag3")] Item item)
         {
 
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && User.IsInRole("Admin"))
             {
                 item.Id = Guid.NewGuid();
                 _context.Add(item);
@@ -140,7 +141,7 @@ namespace Vapor.Controllers
         }
 
         // GET: Items/Edit/5
-        [Authorize("Admin")]
+        [Authorize]
         public async Task<IActionResult> Edit(Guid? id)
         {
             ViewData["Tags"] = _context.Tags.ToList();
@@ -170,7 +171,7 @@ namespace Vapor.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && User.IsInRole("Admin"))
             {
                 try
                 {
@@ -194,9 +195,11 @@ namespace Vapor.Controllers
         }
 
         // GET: Items/Delete/5
-        [Authorize("Admin")]
+        [Authorize]
         public async Task<IActionResult> Delete(Guid? id)
         {
+            if (!User.IsInRole("Admin"))
+                return View();
             if (id == null)
             {
                 return NotFound();

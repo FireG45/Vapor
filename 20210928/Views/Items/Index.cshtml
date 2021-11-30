@@ -22,7 +22,7 @@
     <thead>
         <tr>
             <th>
-                <div class="row">
+                <div class="row  text-white">
                     <div class="col-sm-4">
                         @if (sortBy == "name")
                         {<a asp-action="Index" asp-route-page="@(currentPage)" asp-route-filterBy="@filterBy" asp-route-sort-by="nameD">Название</a>}
@@ -40,22 +40,22 @@
                     <div class="col-sm-4">
                         @if (sortBy == "price")
                         {
-                            <a asp-action="Index" asp-route-page="@(currentPage)" asp-route-filterBy="@filterBy" asp-route-sort-by="priceD">Цена</a>
+                            <a class="text-center" asp-action="Index" asp-route-page="@(currentPage)" asp-route-filterBy="@filterBy" asp-route-sort-by="priceD">Цена</a>
                         }
                         else
                         {
-                            <a asp-action="Index" asp-route-page="@(currentPage)" asp-route-filterBy="@filterBy" asp-route-sort-by="price">Цена</a>
+                            <a class="text-center" asp-action="Index" asp-route-page="@(currentPage)" asp-route-filterBy="@filterBy" asp-route-sort-by="price">Цена</a>
                         }
                         @if (sortBy == "price")
-                        {<span>↓</span>}
+                        {<span class="text-center">↓</span>}
                         @if (sortBy == "priceD")
-                        {<span>↑</span>}
+                        {<span class="text-center">↑</span>}
                     </div>
                 </div>
             </th>
         </tr>
     </thead>
-    <tbody>
+    <tbody style="border-top-color: black; border-top-color: black">
         @foreach (var item in Model)
         {
             if (filterBy != "" && (item.Tag1 == filterBy || item.Tag2 == filterBy || item.Tag3 == filterBy))
