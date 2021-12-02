@@ -14,6 +14,8 @@
     var Iarr3 = new[] { CItem3.Img2, CItem3.Img3, CItem3.Img4, CItem3.Img5 };
 }
 
+@inject UserManager<User> UserManager
+
 <div class="card" style="background-color: #2C2F31">
     <div class="card-body">
         <div class="row">
@@ -26,14 +28,14 @@
                         }
                         else
                         {
-                            <h3>Попробуйте также:</h3>
+                            <h3>Посмотрите также:</h3>
                         }
 
                     </div>
                     <div class="card-body">
                         @if (CItem1 != null || CItem2 != null || CItem3 != null)
                         {
-                            <div id="carouselExampleIndicators" class="carousel slide carousel-fade">
+                            <div id="carouselExampleIndicators" class="carousel slide carousel-fade" data-ride="carousel">
                                 @*<ol class="carousel-indicators">
                                         <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
                                         <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
@@ -84,13 +86,23 @@
 
             <div class="col-md-3">
                 <div class="card" style="background-color: #2C2F31">
-                    <p class="btn text-center" style="background-color: #2C2F31"><a asp-controller="Items" asp-action="Index">Все игры</a></p>
+
+                    <a class="btn btn-outline-dark text-center text-white" asp-controller="Items" asp-action="Index">Все игры</a>
+                    <a class="btn btn-outline-dark text-center text-white" asp-controller="Items" asp-action="Details" asp-route-rand="@true">Случайная игра</a>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <a class="btn btn-outline-dark text-center text-white" asp-controller="Items" asp-action="ShopCart">Корзина</a>
+                        <a class="btn btn-outline-dark text-center text-white" asp-controller="Items" asp-action="WishList">Желаемое</a>
+                    }
+
+
                     @if (User.IsInRole("Admin"))
                     {
-                        <p class="btn text-center" style="background-color: #2C2F31"><a asp-controller="Items" asp-action="Create">Create Item</a></p>
-                        <p class="btn text-center" style="background-color: #2C2F31"><a asp-controller="Reviews" asp-action="Index">Reviews</a></p>
-                        <p class="btn text-center" style="background-color: #2C2F31"><a asp-controller="Tags" asp-action="Index">Tags</a></p>
-                        <p class="btn text-center" style="background-color: #2C2F31"><a asp-controller="Admin" asp-action="RoleList">Roles</a></p>
+                        <p>Admin menu:</p>
+                        <a class="btn btn-outline-dark text-center text-white" asp-controller="Items" asp-action="Create">Create Item</a>
+                        <a class="btn btn-outline-dark text-center text-white" asp-controller="Reviews" asp-action="Index">Reviews</a>
+                        <a class="btn btn-outline-dark text-center text-white" asp-controller="Tags" asp-action="Index">Tags</a>
+                        <a class="btn btn-outline-dark text-center text-white" asp-controller="Admin" asp-action="RoleList">Roles</a>
                     }
                 </div>
             </div>
@@ -102,7 +114,7 @@
 <div class="card" style="background-color: #2C2F31">
     <div class="card-header">
         <h4>Игры с тэгом: <a class="rounded" style="background: #008aff; color: white; ">&nbsp @Tag &nbsp</a> </h4>
-        
+
     </div>
 
     <table class="card-body" style="background-color: #181A1B">

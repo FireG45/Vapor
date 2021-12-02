@@ -33,28 +33,21 @@ namespace Vapor.Controllers
         {
             Random r = new Random();
 
-            var arr = _context.Items.ToArray<Item>();
+            var lst = _context.Items.ToList<Item>();
 
             var user = await signInManager.UserManager.GetUserAsync(User);
             List<Item> items;
 
-            if (user.WishList != null)
+            if (user?.WishList != null)
                 items = JsonSerializer.Deserialize<List<Item>>(user.WishList);
             else
                 items = new();
 
             if (items.Count >= 3)
             {
-                var c1 = items[r.Next(0, items.Count)];
-                var c2 = items[r.Next(0, items.Count)];
-                var c3 = items[r.Next(0, items.Count)];
-
-                while ((c1 == c2) && (c2 == c3) && (c1 == c3))
-                {
-                    c1 = items[r.Next(0, items.Count)];
-                    c2 = items[r.Next(0, items.Count)];
-                    c3 = items[r.Next(0, items.Count)];
-                }
+                var c1 = items[r.Next(0, items.Count)]; items.Remove(c1);
+                var c2 = items[r.Next(0, items.Count)]; items.Remove(c2);
+                var c3 = items[r.Next(0, items.Count)]; items.Remove(c3);
 
                 ViewData["IsWlist"] = true;
                 ViewData["CItem1"] = c1;
@@ -63,16 +56,9 @@ namespace Vapor.Controllers
             }
             else
             {
-                var c1 = arr[r.Next(0, arr.Length)];
-                var c2 = arr[r.Next(0, arr.Length)];
-                var c3 = arr[r.Next(0, arr.Length)];
-
-                while ((c1 == c2) && (c2 == c3) && (c1 == c3))
-                {
-                    c1 = arr[r.Next(0, arr.Length)];
-                    c2 = arr[r.Next(0, arr.Length)];
-                    c3 = arr[r.Next(0, arr.Length)];
-                }
+                var c1 = lst[r.Next(0, lst.Count)]; lst.Remove(c1);
+                var c2 = lst[r.Next(0, lst.Count)]; lst.Remove(c2);
+                var c3 = lst[r.Next(0, lst.Count)]; lst.Remove(c3);
 
                 ViewData["IsWlist"] = false;
                 ViewData["CItem1"] = c1;

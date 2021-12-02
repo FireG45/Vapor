@@ -94,18 +94,25 @@ namespace Vapor.Controllers
         }
 
         // GET: Items/Details/5
-        public async Task<IActionResult> Details(Guid? id)
+        public async Task<IActionResult> Details(Guid? id,bool rand=false)
         {
             ViewData["Reviews"] = _context.Reviews.ToList();
 
-            if (id == null)
+            if (id == null && !rand)
             {
                 return NotFound();
             }
 
+            if(rand)
+            {
+                Random r = new();
+                var arr = _context.Items.ToList<Item>();
+                id = arr[r.Next(0, arr.Count)].Id;
+            }
+
             var item = await _context.Items
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (item == null)
+            if (item == null && !rand) 
             {
                 return NotFound();
             }
@@ -334,7 +341,7 @@ namespace Vapor.Controllers
             user = await signInManager.UserManager.GetUserAsync(User);
             List<Item> items;
 
-            if (user.ShopCart != null)
+            if (user?.ShopCart != null)
                 items = JsonSerializer.Deserialize<List<Item>>(user.ShopCart);
             else
                 items = new();
@@ -347,7 +354,7 @@ namespace Vapor.Controllers
             user = await signInManager.UserManager.GetUserAsync(User);
             List<Item> items;
 
-            if (user.WishList != null)
+            if (user?.WishList != null)
                 items = JsonSerializer.Deserialize<List<Item>>(user.WishList);
             else
                 items = new();
@@ -389,7 +396,6 @@ namespace Vapor.Controllers
 
             return View(items);
         }
-
 
 
     }
