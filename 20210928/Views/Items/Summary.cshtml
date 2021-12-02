@@ -1,0 +1,34 @@
+﻿@model IEnumerable<Item>
+@{
+
+
+    decimal sum = 0;
+    ViewData["Title"] = "Итог";
+}
+
+<table class="table-borderless">
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            sum += item.Price;
+            <tr>
+                <td>
+                    <div class="container  text-white">
+
+                        <div class="card text-white" style="background-color: #2C2F31">
+                            <h5 class="card-header"><a asp-action="Details" asp-route-id="@item.Id" class="text-left">@Html.DisplayFor(modelItem => item.Name)</a></h5>
+                            <div class="row card-body">
+                                <div class="col-sm-4">
+                                    <a asp-action="Details" asp-route-id="@item.Id"><img class="img-thumbnail" style="background-color: #181A1B;" src="@Html.DisplayFor(modelItem => item.Img)" /><br></a>
+                                </div>
+                                <h3>@Item.KeyGen()-@Item.KeyGen()-@Item.KeyGen()</h3>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        }
+
+    </tbody>
+</table>

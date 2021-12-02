@@ -14,7 +14,7 @@ namespace Vapor.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "5.0.9");
+                .HasAnnotation("ProductVersion", "5.0.12");
 
             modelBuilder.Entity("Vapor.Models.Item", b =>
                 {
@@ -29,6 +29,18 @@ namespace Vapor.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Img")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Img2")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Img3")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Img4")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Img5")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")

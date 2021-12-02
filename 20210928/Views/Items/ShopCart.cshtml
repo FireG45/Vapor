@@ -1,9 +1,12 @@
 ﻿@model IEnumerable<Item>
 @{
     decimal sum = 0;
+    ViewData["Title"] = "Корзина";
 }
+
 <h2>Корзина</h2>
-<table class="table">
+<table class="table-borderless">
+
     <tbody>
         @foreach (var item in Model)
         {
@@ -23,4 +26,10 @@
 
     </tbody>
 </table>
-<h4 class="text-right">К оплате : @sum.ToString("c")</h4>
+
+
+
+<h4 class="text-right">
+    Сумма : @sum.ToString("c")<br>
+    <a class=" btn btn-outline-danger" asp-controller="Items" asp-action="Summary">Оплатить</a>
+</h4>

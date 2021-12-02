@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Vapor.Areas.Identity.Data;
 using Vapor.Data;
 using Vapor.Models;
 
@@ -13,10 +15,14 @@ namespace Vapor.Controllers
     public class ReviewsController : Controller
     {
         private readonly StoreContext _context;
-
-        public ReviewsController(StoreContext context)
+        private readonly UsersContext _ucontext;
+        private readonly UserManager<User> userManager;
+        
+        public ReviewsController(StoreContext context, UsersContext ucontext, UserManager<User> userManager)
         {
             _context = context;
+            _ucontext = ucontext;
+            this.userManager = userManager;
         }
 
         // GET: Reviews
@@ -56,11 +62,12 @@ namespace Vapor.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Text,Score,Item")] Review review)
+        public async Task<IActionResult> Create([Bind("Id,Author,Text,Score,Item")] Review review)
         {
             if (ModelState.IsValid)
             {
                 review.Id = Guid.NewGuid();
+                //review.Author = "asdfasdfsadf";//868//userManager.GetUserId(User);
                 review.Item = _context.Items.FirstOrDefault(item => item.Id == review.Item.Id);
                 review.Date = DateTime.Now;
                 //_context.Items.FirstOrDefault(item => item.Id == review.Item.Id).Reviews.Add(review);

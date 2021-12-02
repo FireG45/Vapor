@@ -7,11 +7,24 @@ namespace Vapor.Models
 {
     public class Item
     {
+        static public string KeyGen()
+        {
+            Random r = new Random();
+            var key = "";
+            var alph = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            for (int i = 0; i < 5; i++)
+                key += alph[r.Next(0, alph.Length)];
+            return key;
+        }
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public decimal Price { get; set; }
         public string Img { get; set; }
+        public string Img2 { get; set; }
+        public string Img3 { get; set; }
+        public string Img4 { get; set; }
+        public string Img5 { get; set; }
         public string Vid { get; set; }
         public long AvgScore { get; set; }
         public long ScoreSumm { get; set; }

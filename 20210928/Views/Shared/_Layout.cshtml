@@ -11,12 +11,16 @@
     <title>@ViewData["Title"] - Vapor</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="icon" href="~/img/favicon.ico" type="image/x-icon">
 </head>
-<body style="background-color:#181A1B">
+<body style="background-color: #181A1B; background: linear-gradient(#181A1B, #2C2F31) fixed; ">
     <header>
+       
         <nav class="navbar navbar-expand-md navbar-dark fixed-top" style="background-color:#2C2F31">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-controller="Home" asp-action="Index">Vapor</a>
+                <a class="navbar-brand" asp-controller="Home" asp-action="Index">
+                    Vapor
+                </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -27,7 +31,7 @@
                     </div>
 
                     <div>
-                        
+
                     </div>
 
 
@@ -37,16 +41,20 @@
 
 
         @*<form class="d-flex">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>*@
+            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>*@
         <!--</div>
-            </div>
-        </nav>-->
+        </div>
+    </nav>-->
     </header>
 
     <div class="container ">
-        <main role="main" class="m-5 p-1 text-white">
+        <p>
+            <br />
+        </p>
+        <main role="main" class="m-5 text-white">
+
             @RenderBody()
         </main>
     </div>

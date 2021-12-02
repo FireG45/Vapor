@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Vapor.Areas.Identity.Data;
 
 namespace Vapor.Models
 {
@@ -10,13 +11,12 @@ namespace Vapor.Models
     {
         public Guid Id { get; set; }
 
+        //[Required]
+        //public string Author { get; set; }
 
-        [DataType(DataType.MultilineText)]
-        [Required]
+        [DataType(DataType.Text, ErrorMessage = "Введите текст отзыва!")]
         public string Text { get; set; }
 
-        [Required(ErrorMessage = "Введите корректную оценку!")]
-        [Range(0,10)]
         public int Score { get; set; }
 
         public DateTime Date { get; set; }

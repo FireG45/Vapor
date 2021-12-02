@@ -1,22 +1,22 @@
 ﻿@model Item
-<div class="container">
-    <h5><a asp-action="Details" asp-route-id="@Model.Id" class="text-left">@Html.DisplayFor(modelItem => Model.Name)</a></h5>
+    <div class="card text-white" style="background-color: #2C2F31">
+        <h5 class="card-header"><a asp-action="Details" asp-route-id="@Model.Id" class="text-left">@Html.DisplayFor(modelItem => Model.Name)</a></h5>
 
 
-    <div class="row">
-        <div class="col-sm-4">
-            <a asp-action="Details" asp-route-id="@Model.Id"><img class="img-thumbnail" src="@Html.DisplayFor(modelItem => Model.Img)" /></a>
+        <div class="row card-body">
+            <div class="col-sm-4">
+                <a asp-action="Details" asp-route-id="@Model.Id"><img class="img-thumbnail" style="background-color: #181A1B;" src="@Html.DisplayFor(modelItem => Model.Img)" /><br></a>
+                <a asp-controller="Items" asp-route-filterBy="@Model.Tag1" class="rounded" style="background: #008aff; color: white; ">&nbsp @Model.Tag1 &nbsp<br></a>
+                <a asp-controller="Items" asp-route-filterBy="@Model.Tag2" class="rounded" style="background: #008aff; color: white; ">&nbsp @Model.Tag2 &nbsp<br></a>
+                <a asp-controller="Items" asp-route-filterBy="@Model.Tag3" class="rounded" style="background: #008aff; color: white; ">&nbsp @Model.Tag3 &nbsp<br></a>
+            </div>
+            <div class="col-sm-4 ">
+                <p class="text-left ">@Model.Description</p>
+            </div>
 
-            <a asp-controller="Items" asp-route-filterBy="@Model.Tag1" class="rounded" style="background: #008aff; color: #ffffff"> @Model.Tag1 </a>,
-            <a asp-controller="Items" asp-route-filterBy="@Model.Tag2" class="rounded" style="background: #008aff; color: #ffffff"> @Model.Tag2 </a>,
-            <a asp-controller="Items" asp-route-filterBy="@Model.Tag3" class="rounded" style="background: #008aff; color: #ffffff"> @Model.Tag3 </a>
-        </div>
-        <div class="col-sm-4">
-            <p class="text-left">@Model.Description</p>
-        </div>
-        <div class="col-sm-4">
-            <h4>@Model.Price.ToString("c")</h4>
-            <p><a class=" btn btn-outline-danger" asp-controller="Items" asp-action="DeleteFromCart" asp-route-Id="@Model">Удалить из корзины</a></p>
+            <div class="col-sm-4">
+                <h4>@Model.Price.ToString("c")</h4>
+                <p><a class=" btn btn-outline-danger" asp-controller="Items" asp-action="DeleteFromCart" asp-route-Id="@Model">Удалить из корзины</a></p>
+            </div>
         </div>
     </div>
-</div>

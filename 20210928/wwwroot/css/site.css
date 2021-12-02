@@ -6,6 +6,9 @@ a.navbar-brand {
   text-align: center;
   word-break: break-all;
 }
+.card {
+    background-color: #181A1B
+}
 
 /* Provide sufficient contrast against white background */
 a {
