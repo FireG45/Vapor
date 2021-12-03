@@ -10,7 +10,7 @@
     <tbody>
         @foreach (var item in Model)
         {
-            sum += item.Price;
+            sum += item.SalePrice();
             <tr>
                 <td>
                     <div class="container  text-white">
@@ -29,7 +29,7 @@
 
 
 
-<h4 class="text-right">
+<h4 class="text-center">
     Сумма : @sum.ToString("c")<br>
     <a class=" btn btn-outline-danger" asp-controller="Items" asp-action="Summary">Оплатить</a>
 </h4>

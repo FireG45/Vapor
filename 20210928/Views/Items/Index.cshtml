@@ -8,7 +8,7 @@
     string sortBy = ViewData["SortBy"] as string ?? "";
     string filterBy = ViewData["FilterBy"] as string ?? "";
 
-    ViewData["Title"] = filterBy!="" ? filterBy : "Все игры";
+    ViewData["Title"] = filterBy != "" ? filterBy : "Все игры";
 
 }
 @{
@@ -19,44 +19,37 @@
 }
 
 
-<table style="background-color: #181A1B">
-    <thead >
-        <tr>
-            <th>
-                <div class="row  text-white">
-                    <div class="col-sm-4">
-                        @if (sortBy == "name")
-                        {<a asp-action="Index" asp-route-page="@(currentPage)" asp-route-filterBy="@filterBy" asp-route-sort-by="nameD">Название</a>}
-                        else
-                        {<a asp-action="Index" asp-route-page="@(currentPage)" asp-route-filterBy="@filterBy" asp-route-sort-by="name">Название</a>}
-                        @if (sortBy == "name")
-                        {<span>↓</span>}
-                        @if (sortBy == "nameD")
-                        {<span>↑</span>}
-                    </div>
-                    <div class="col-sm-4">
+<div class="card" style="background-color: #181A1B">
 
-                    </div>
+    <div class="row text-white">
+        <div class="col-sm-4">
+            @if (sortBy == "name")
+            {<a asp-action="Index" asp-route-page="@(currentPage)" asp-route-filterBy="@filterBy" asp-route-sort-by="nameD">Название</a>}
+            else
+            {<a asp-action="Index" asp-route-page="@(currentPage)" asp-route-filterBy="@filterBy" asp-route-sort-by="name">Название</a>}
+            @if (sortBy == "name")
+            {<span>↓</span>}
+            @if (sortBy == "nameD")
+            {<span>↑</span>}
+        </div>
 
-                    <div class="col-sm-4">
-                        @if (sortBy == "price")
-                        {
-                            <a class="text-center" asp-action="Index" asp-route-page="@(currentPage)" asp-route-filterBy="@filterBy" asp-route-sort-by="priceD">Цена</a>
-                        }
-                        else
-                        {
-                            <a class="text-center" asp-action="Index" asp-route-page="@(currentPage)" asp-route-filterBy="@filterBy" asp-route-sort-by="price">Цена</a>
-                        }
-                        @if (sortBy == "price")
-                        {<span class="text-center">↓</span>}
-                        @if (sortBy == "priceD")
-                        {<span class="text-center">↑</span>}
-                    </div>
-                </div>
-            </th>
-        </tr>
-    </thead>
-    <tbody class="card-body">
+        <div class="col-sm-4">
+            @if (sortBy == "price")
+            {
+                <a class="text-center" asp-action="Index" asp-route-page="@(currentPage)" asp-route-filterBy="@filterBy" asp-route-sort-by="priceD">Цена</a>
+            }
+            else
+            {
+                <a class="text-center" asp-action="Index" asp-route-page="@(currentPage)" asp-route-filterBy="@filterBy" asp-route-sort-by="price">Цена</a>
+            }
+            @if (sortBy == "price")
+            {<span class="text-center">↓</span>}
+            @if (sortBy == "priceD")
+            {<span class="text-center">↑</span>}
+        </div>
+    </div>
+
+    <div class="card-body">
         @foreach (var item in Model)
         {
             if (filterBy != "" && (item.Tag1 == filterBy || item.Tag2 == filterBy || item.Tag3 == filterBy))
@@ -76,8 +69,8 @@
                 </tr>
             }
         }
-    </tbody>
-</table>
+    </div>
+</div>
 
 
 <div>

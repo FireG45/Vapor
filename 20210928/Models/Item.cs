@@ -19,6 +19,7 @@ namespace Vapor.Models
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+        public double Sale { get; set; } = 0.0;
         public decimal Price { get; set; }
         public string Img { get; set; }
         public string Img2 { get; set; }
@@ -38,6 +39,10 @@ namespace Vapor.Models
         public override string ToString()
         {
             return $"{Id}";
+        }
+        public decimal SalePrice()
+        {
+            return (decimal)((double)Price - (double)Price * Sale);
         }
     }
 }

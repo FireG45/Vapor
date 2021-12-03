@@ -71,7 +71,7 @@ namespace Vapor.Controllers
             //var Arr = .ToList<Item>();
 
             List<Item> TagItems = new();
-            while(TagItems.Count<3)
+            while (TagItems.Count < 3)
             {
                 TagItems.Clear();
                 tag = TagArr[r.Next(0, TagArr.Count)].tag;
@@ -84,7 +84,13 @@ namespace Vapor.Controllers
             ViewData["Tag"] = tag;
             ViewData["TagItems"] = TagItems;
 
-
+            List<Item> SaleItems = new();
+            foreach (Item i in _context.Items)
+            {
+                if(i.Sale>0)
+                SaleItems.Add(i);
+            }
+            ViewData["SaleItems"] = SaleItems;
 
             return View();
         }

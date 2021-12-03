@@ -12,6 +12,9 @@
     var Iarr1 = new[] { CItem1.Img2, CItem1.Img3, CItem1.Img4, CItem1.Img5 };
     var Iarr2 = new[] { CItem2.Img2, CItem2.Img3, CItem2.Img4, CItem2.Img5 };
     var Iarr3 = new[] { CItem3.Img2, CItem3.Img3, CItem3.Img4, CItem3.Img5 };
+
+    var SaleItems = ViewData["SaleItems"] as List<Item>;
+
 }
 
 @inject UserManager<User> UserManager
@@ -46,7 +49,19 @@
                                         <img class="d-block w-100" src=@Iarr1[R.Next(0, Iarr3.Length)] alt="First slide">
                                         <div class="carousel-caption d-none d-md-block">
                                             <h2>@CItem1.Name</h2>
-                                            @CItem1.Price.ToString("c")<br />
+                                            @{var sale = CItem1.Sale * 100;}
+                                            @if (CItem1.Sale == 0)
+                                            {
+                                                <a class="text-center">@CItem1.Price.ToString("c")</a>
+                                            }
+                                            else
+                                            {
+
+                                                <a class="text-center">@CItem1.SalePrice().ToString("c")</a>
+                                                <a style="font-size:16px ;color:#4cff00; background-color:#1e6500">&nbsp-@sale%&nbsp</a>
+
+
+                                            }<br />
                                             <a class="btn btn-danger" asp-controller="Items" asp-action="Details" asp-route-Id=@CItem1.Id>Подробнее</a>
                                         </div>
                                     </div>
@@ -54,7 +69,19 @@
                                         <img class="d-block w-100" src=@Iarr2[R.Next(0, Iarr3.Length)] alt="Second slide">
                                         <div class="carousel-caption d-none d-md-block">
                                             <h2>@CItem2.Name</h2>
-                                            @CItem2.Price.ToString("c")<br />
+                                            @{sale = CItem2.Sale * 100;}
+                                            @if (CItem2.Sale == 0)
+                                            {
+                                                <a class="text-center">@CItem2.Price.ToString("c")</a>
+                                            }
+                                            else
+                                            {
+
+                                                <a class="text-center">@CItem2.SalePrice().ToString("c")</a>
+                                                <a style="font-size:16px ;color:#4cff00; background-color:#1e6500">&nbsp-@sale%&nbsp</a>
+
+
+                                            }<br />
                                             <a class="btn btn-danger" asp-controller="Items" asp-action="Details" asp-route-Id=@CItem2.Id>Подробнее</a>
                                         </div>
                                     </div>
@@ -62,7 +89,17 @@
                                         <img class="d-block w-100" src=@Iarr3[R.Next(0, Iarr3.Length)] alt="Third slide">
                                         <div class="carousel-caption d-none d-md-block">
                                             <h2>@CItem3.Name</h2>
-                                            @CItem3.Price.ToString("c")<br />
+                                            @{sale = CItem3.Sale * 100;}
+                                            @if (CItem3.Sale == 0)
+                                            {
+                                                <a class="text-center">@CItem3.Price.ToString("c")</a>
+                                            }
+                                            else
+                                            {
+                                                <a class="text-center">@CItem3.SalePrice().ToString("c")</a>
+                                                <a style="font-size:16px ;color:#4cff00; background-color:#1e6500">&nbsp-@sale%&nbsp</a>
+                                            }
+                                            <br />
                                             <a class=" btn btn-danger" asp-controller="Items" asp-action="Details" asp-route-Id="@CItem3.Id">Подробнее</a>
                                         </div>
                                     </div>
@@ -110,7 +147,27 @@
 
     </div>
 </div>
+<br />
+<div class="card" style="background-color: #2C2F31">
+    <div class="card-header">
+        <h5>Скидки:</h5>
+    </div>
 
+    <table class="card-body" style="background-color: #181A1B">
+        <tbody>
+            @foreach (var item in SaleItems)
+            {
+                <tr>
+                    <td>
+                        <partial name="OneItem" model="item" />
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
+<br />
 <div class="card" style="background-color: #2C2F31">
     <div class="card-header">
         <h4>Игры с тэгом: <a class="rounded" style="background: #008aff; color: white; ">&nbsp @Tag &nbsp</a> </h4>

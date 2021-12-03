@@ -1,4 +1,5 @@
 ﻿@model Item
+@{var sale = Model.Sale * 100;}
     <div class="card text-white" style="background-color: #2C2F31">
         <h5 class="card-header"><a asp-action="Details" asp-route-id="@Model.Id" class="text-left">@Html.DisplayFor(modelItem => Model.Name)</a></h5>
 
@@ -15,8 +16,20 @@
             </div>
 
             <div class="col-sm-4">
-                <h4>@Model.Price.ToString("c")</h4>
-                <p><a class=" btn btn-outline-danger" asp-controller="Items" asp-action="DeleteFromWlist" asp-route-Id="@Model">Удалить из желаемого</a></p>
+                @if (Model.Sale == 0)
+                {
+                    <h4 class="text-center">@Model.Price.ToString("c")</h4>
+                }
+                else
+                {
+                    <p class="text-center">
+                        <a style="font-size:16px ;color:#4cff00; background-color:#1e6500">&nbsp-@sale%&nbsp</a>&nbsp
+                        <s>@Model.Price.ToString("c")</s>
+                    </p>
+                    <h4 class="text-center">@Model.SalePrice().ToString("c")</h4>
+
+                }
+                <p class="text-center"><a class=" btn btn-outline-danger" asp-controller="Items" asp-action="DeleteFromWlist" asp-route-Id="@Model">Удалить из желаемого</a></p>
             </div>
         </div>
     </div>
