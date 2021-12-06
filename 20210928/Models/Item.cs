@@ -44,5 +44,16 @@ namespace Vapor.Models
         {
             return (decimal)((double)Price - (double)Price * Sale);
         }
+
+        public void UpdateAvgScore()
+        {
+            if (ScoreCount == 0)
+            {
+                AvgScore = -1;
+                return;
+            }
+
+            AvgScore = ScoreSumm / ScoreCount;
+        }
     }
 }

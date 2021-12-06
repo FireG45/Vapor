@@ -13,6 +13,8 @@ namespace Vapor.Models
 
         //[Required]
         //public string Author { get; set; }
+        [DataType(DataType.Text)]
+        public string Author { get; set; }
 
         [DataType(DataType.Text, ErrorMessage = "Введите текст отзыва!")]
         public string Text { get; set; }

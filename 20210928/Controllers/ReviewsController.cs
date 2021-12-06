@@ -17,7 +17,7 @@ namespace Vapor.Controllers
         private readonly StoreContext _context;
         private readonly UsersContext _ucontext;
         private readonly UserManager<User> userManager;
-        
+
         public ReviewsController(StoreContext context, UsersContext ucontext, UserManager<User> userManager)
         {
             _context = context;
@@ -49,7 +49,7 @@ namespace Vapor.Controllers
             return View(review);
         }
 
-     
+
         // GET: Reviews/Create
         public IActionResult Create()
         {
@@ -99,7 +99,7 @@ namespace Vapor.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Text,Score")] Review review)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Text,Score,Author")] Review review)
         {
             if (id != review.Id)
             {
@@ -141,10 +141,14 @@ namespace Vapor.Controllers
             //var review = await _context.Reviews
             //    .FirstOrDefaultAsync(m => m.Id == id);
 
-            var review = await _context.Reviews.FindAsync(id);
+            var review = _context.Reviews.Find(id);
+            //var item = _context.Items.FirstOrDefault(m => m.Id == review.Item.Id);
+            //review.Item.ScoreCount--;
+            //review.Item.ScoreSumm -= review.Score;
+            //_context.Update(review.Item);
             _context.Reviews.Remove(review);
             await _context.SaveChangesAsync();
-            
+
 
 
             if (review == null)
@@ -156,6 +160,76 @@ namespace Vapor.Controllers
 
             //return View(review);
         }
+
+        public async Task<IActionResult> Generate()
+        {
+            var Items = _context.Items.ToList<Item>();
+            var rnd = new[] { "LemonCat", "fireg", "qqForest", "goga", "ghost666", "killer", "asd312", "pripapupa", "popster", "llkers", "kiboe", "milfhunter", "kuckoi", "roldan" };
+            Random r = new();
+
+            foreach (Item _item in Items)
+            {
+                for(int i=0;i<r.Next(3,10);i++)
+                {
+                    Review review = new();
+                    review.Item = _item;
+                    review.Id = Guid.NewGuid();
+                    review.Author = rnd[r.Next(0, rnd.Length)] + r.Next(0, rnd.Length).ToString();
+                    DateTime dateTime = new();
+                    //dateTime.AddHours(r.Next(rnd.Length, rnd.Length));
+                    review.Date = dateTime;
+                    review.Score = r.Next(5, 10);
+
+                    review.Item.ScoreCount++;
+                    review.Item.ScoreSumm += review.Score;
+                    var vgood = new[] { "Замечаетльно", "Прекрастно", "Великолепно", "Хорошо", "неплохо", };
+                    var norm = new[] { "нормально", "пойдёт", "ну такое" };
+                    var bad = new[] { "какой ужас", "ужастно", "оч плохо(" };
+
+
+                    if (review.Score >= 8)
+                        review.Text = vgood[r.Next(0, vgood.Length)];
+                    else if (review.Score >= 6)
+                        review.Text = norm[r.Next(0, norm.Length)];
+                    else
+                        review.Text = bad[r.Next(0, bad.Length)];
+
+                    review.Item.UpdateAvgScore();
+                    _context.Update(review.Item);
+                    _context.Add(review);
+                }
+            }
+
+
+            await _context.SaveChangesAsync();
+
+
+            return RedirectToAction(nameof(Index));
+
+
+        }
+
+        public async Task<IActionResult> DeleteAll()
+        {
+            var Items = _context.Items.ToList<Item>();
+            var Reviews = _context.Reviews.ToList<Review>();
+
+            foreach (Item item in Items)
+            {
+                item.ScoreCount=0;
+                item.ScoreSumm=0;
+                item.UpdateAvgScore();
+                _context.Items.Update(item);
+                foreach (Review review in Reviews)
+                    _context.Reviews.Remove(review);
+            }
+
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
+        }
+
 
         // POST: Reviews/Delete/5
         //[HttpPost, ActionName("Delete")]

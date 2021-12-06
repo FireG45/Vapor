@@ -21,31 +21,73 @@
 
 <div class="card" style="background-color: #181A1B">
 
-    <div class="row text-white">
-        <div class="col-sm-4">
+    <div class="card-header row text-white">
+        <div class="text-center col-sm-4">
             @if (sortBy == "name")
-            {<a asp-action="Index" asp-route-page="@(currentPage)" asp-route-filterBy="@filterBy" asp-route-sort-by="nameD">Название</a>}
+            {<a asp-action="Index" asp-route-page="@(currentPage)" asp-route-filterBy="@filterBy" asp-route-sort-by="nameD">
+                    Название
+                    @if (sortBy == "name")
+                    {<span>↓</span>}
+                    @if (sortBy == "nameD")
+                    {<span>↑</span>}
+                </a>
+            }
             else
-            {<a asp-action="Index" asp-route-page="@(currentPage)" asp-route-filterBy="@filterBy" asp-route-sort-by="name">Название</a>}
-            @if (sortBy == "name")
-            {<span>↓</span>}
-            @if (sortBy == "nameD")
-            {<span>↑</span>}
-        </div>
+            {<a asp-action="Index" asp-route-page="@(currentPage)" asp-route-filterBy="@filterBy" asp-route-sort-by="name">
+                    Название
+                    @if (sortBy == "name")
+                    {<span>↓</span>}
+                    @if (sortBy == "nameD")
+                    {<span>↑</span>}
+                </a>
+            }
 
-        <div class="col-sm-4">
-            @if (sortBy == "price")
+        </div>
+        <div class="text-center col-sm-4">
+            @if (sortBy == "score")
             {
-                <a class="text-center" asp-action="Index" asp-route-page="@(currentPage)" asp-route-filterBy="@filterBy" asp-route-sort-by="priceD">Цена</a>
+                <a class="text-center" asp-action="Index" asp-route-page="@(currentPage)" asp-route-filterBy="@filterBy" asp-route-sort-by="scoreD">
+                    Рейтинг
+                    @if (sortBy == "score")
+                    {<span class="text-center">↓</span>}
+                    @if (sortBy == "scoreD")
+                    {<span class="text-center">↑</span>}
+                </a>
             }
             else
             {
-                <a class="text-center" asp-action="Index" asp-route-page="@(currentPage)" asp-route-filterBy="@filterBy" asp-route-sort-by="price">Цена</a>
+                <a class="text-center" asp-action="Index" asp-route-page="@(currentPage)" asp-route-filterBy="@filterBy" asp-route-sort-by="score">
+                    Рейтинг
+                    @if (sortBy == "score")
+                    {<span class="text-center">↓</span>}
+                    @if (sortBy == "scoreD")
+                    {<span class="text-center">↑</span>}
+                </a>
             }
+
+        </div>
+        <div class="text-center col-sm-4">
             @if (sortBy == "price")
-            {<span class="text-center">↓</span>}
-            @if (sortBy == "priceD")
-            {<span class="text-center">↑</span>}
+            {
+                <a class="text-center" asp-action="Index" asp-route-page="@(currentPage)" asp-route-filterBy="@filterBy" asp-route-sort-by="priceD">
+                    Цена
+                    @if (sortBy == "price")
+                    {<span class="text-center">↓</span>}
+                    @if (sortBy == "priceD")
+                    {<span class="text-center">↑</span>}
+                </a>
+            }
+            else
+            {
+                <a class="text-center" asp-action="Index" asp-route-page="@(currentPage)" asp-route-filterBy="@filterBy" asp-route-sort-by="price">
+                    Цена
+                    @if (sortBy == "price")
+                    {<span class="text-center">↓</span>}
+                    @if (sortBy == "priceD")
+                    {<span class="text-center">↑</span>}
+                </a>
+            }
+
         </div>
     </div>
 

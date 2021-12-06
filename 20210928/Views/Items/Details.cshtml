@@ -4,6 +4,7 @@
     ViewData["Title"] = Model.Name;
     Review r = new Review();
 
+    var user = ViewData["User"] as User;
 
     //var reviews = ViewData["Reviews"] as List<Review>;
     //SelectList itemsSelectList = reviews != null ? new SelectList(reviews, "Id", "Name") : null;
@@ -12,16 +13,28 @@
 @{
     var shopcart = ViewBag.SCart as List<Item>;
     var wishlist = ViewBag.Wlist as List<Item>;
-
 }
+
 @{
     var reviews = ViewData["Reviews"] as List<Review>;
 
     var sale = Model.Sale * 100;
-}   
+
+    Model.ScoreCount = 0;
+    Model.ScoreSumm = 0;
+
+    if (reviews != null)
+        foreach (var rev in reviews)
+            if (rev.Item == Model)
+            {
+                Model.ScoreCount++;
+                Model.ScoreSumm += rev.Score;
+            }
+    Model.UpdateAvgScore();
+}
 <div class="card" style="background-color: #2C2F31">
     <div class="card-header">
-        <h3>@Model.Name</h3>
+        <h2>@Model.Name</h2>
     </div>
 
 
@@ -32,13 +45,16 @@
                     <div class="card-body">
                         <div id="carouselExampleIndicators" class="carousel slide carousel-fade" data-ride="carousel">
                             @*<ol class="carousel-indicators">
-                                <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-                                <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-                                <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-                                <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
-                            </ol>*@
+                                    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                                    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                                    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                                    <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
+                                </ol>*@
                             <div class="carousel-inner">
                                 <div class="carousel-item active">
+                                    <video class="d-block w-100" src=@Model.Vid alt="First slide"></video>
+                                </div>
+                                <div class="carousel-item">
                                     <img class="d-block w-100" src=@Model.Img2 alt="First slide">
                                 </div>
                                 <div class="carousel-item">
@@ -103,10 +119,32 @@
             <div class="col-md-4">
                 <div class="card" style="background-color: #2C2F31">
                     <img class="card-header" src=@Model.Img />
-                    <div class="card-body">
+                    <div class="card-body text-center">
                         <p class="text-center">
                             @Model.Description
                         </p>
+                        @if (Model.ScoreCount > 0)
+                        {
+                            @if (Model.AvgScore >= 7)
+                            {
+                                <div class=" text-center rating" style="background-color:#4cff00">
+                                    @Model.AvgScore.ToString("f")
+                                </div>
+                            }
+                            else if (Model.AvgScore >= 5)
+                            {
+                                <div class="text-center rating" style="background-color:#ffd800">
+                                    @Model.AvgScore.ToString("f")
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="text-center rating" style="background-color:#ff0000">
+                                    @Model.AvgScore.ToString("f")
+                                </div>
+                            }
+                        }
+
                     </div>
                     <div class="card-footer text-center">
                         <a asp-controller="Items" asp-action="Index" asp-route-filterBy="@Model.Tag1" class="rounded" style="background: #008aff; color: white; ">&nbsp @Model.Tag1 &nbsp</a><br />
@@ -131,9 +169,10 @@
 
 </div>
 <div class="card" style="background-color: #2C2F31">
-    <h3 class="card-header">Оставить отзыв :</h3>
+
+    <h3 class="card-header"> Оставить отзыв:</h3>
     <div class="card-body">
-        <form asp-action="AddReview" asp-route-id="@Model.Id">
+        <form asp-action="AddReview" asp-route-id="@Model.Id" asp-route-username="@user.UserName">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label class="control-label">Текст</label>
@@ -154,21 +193,21 @@
                 </div>*@
 
 
-        <div class="form-row align-items-center">
-            <div class="col-auto my-1">
-                <label class="mr-sm-2 sr-only" for="inlineFormCustomSelect">Preference</label>
-                <select asp-for="@r.Score" class="custom-select mr-sm-2" id="inlineFormCustomSelect">
-                    @for (int i = 0; i <= 10; i++)
-                    {
-                        <option value="@i">@i/10</option>
-                    }
-                </select>
+            <div class="form-row align-items-center">
+                <div class="col-auto my-1">
+                    <label class="mr-sm-2 sr-only" for="inlineFormCustomSelect">Preference</label>
+                    <select asp-for="@r.Score" class="custom-select mr-sm-2" id="inlineFormCustomSelect">
+                        @for (int i = 0; i <= 10; i++)
+                        {
+                            <option value="@i">@i</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-auto my-1">
+                    <button type="submit" class="btn btn-outline-info">Отправить отзыв</button>
+                </div>
+                <span asp-validation-for="@r.Text" class="text-danger"></span>
             </div>
-            <div class="col-auto my-1">
-                <button type="submit" class="btn btn-outline-info">Отправить отзыв</button>
-            </div>
-            <span asp-validation-for="@r.Text" class="text-danger"></span>
-        </div>
 
 
         </form>
@@ -179,41 +218,52 @@
 
 <div class="card" style="background-color: #2C2F31">
     <h3 class="card-header">Все отзывы на @Model.Name :</h3>
-    <table class="card-body table text-white">
-        <thead>
-            <tr>
-                <th>
-                    Текст
-                </th>
-                <th>
-                    Оценка
-                </th>
-                <th>
-                    Дата
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @{ if (reviews != null)
-                    foreach (var rev in reviews)
-                        if (rev.Item == Model)
-                        {
-                            <tr>
-                                <td>
-                                    @rev.Text
-                                </td>
-                                <td>
-                                    @rev.Score/10
-                                </td>
-                                <td>
-                                    @rev.Date
-                                </td>
-                            </tr>
-                        }
-            }
-        </tbody>
-    </table>
+    <div class="card-body table text-white">
+
+        @{ if (reviews != null)
+                foreach (var rev in reviews)
+                    if (rev.Item == Model)
+                    {
+                        <div class="card" style="background-color: #2C2F31">
+                            <div class="card-header">
+                                @rev.Author
+                            </div>
+                            <div class="card-body text-left">
+                                <div class="text-left">
+                                    Оценка:
+                                    @if (rev.Score >= 7)
+                                    {
+                                        <div class="rating" style="background-color:#4cff00; width:50px">
+                                            @rev.Score.ToString("f")
+                                        </div>
+                                    }
+                                    else if (rev.Score >= 5)
+                                    {
+                                        <div class="rating" style="background-color: #ffd800; width: 50px">
+                                            @rev.Score.ToString("f")
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="rating" style="background-color: #ff0000; width: 50px">
+                                            @rev.Score.ToString("f")
+                                        </div>
+                                    }
+                                </div>
+                                @rev.Text
+                            </div>
+                            @if (User.IsInRole("Admin") || User.Identity.Name == rev.Author)
+                            {
+                                <div class="card-footer">
+                                    <a asp-action="DeleteReview" asp-route-revid="@rev.Id" asp-route-itemid="@Model.Id">Delete</a>
+                                </div>
+                            }
+                        </div>
+                    }
+        }
+
+    </div>
+
 </div>
 
 

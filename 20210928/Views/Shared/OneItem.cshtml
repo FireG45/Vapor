@@ -4,6 +4,21 @@
     var shopcart = ViewBag.SCart as List<Item>;
     var wishlist = ViewBag.Wlist as List<Item>;
     var sale = Model.Sale*100;
+
+    //var reviews = ViewData["Reviews"] as List<Review>;
+
+    //Model.ScoreCount = 0;
+    //Model.ScoreSumm = 0;
+
+    //if (reviews != null)
+    //    foreach (var rev in reviews)
+    //        if (rev.Item == Model)
+    //        {
+    //            Model.ScoreCount++;
+    //            Model.ScoreSumm += rev.Score;
+    //        }
+    //Model.UpdateAvgScore();
+
 }
 @inject StoreContext _context
 <div class="card text-white" style="background-color: #2C2F31">
@@ -13,12 +28,34 @@
     <div class="row card-body">
         <div class="col-sm-4 text-center">
             <a asp-controller="Items" asp-action="Details" asp-route-id="@Model.Id"><img class="img-thumbnail" style="background-color: #181A1B;" src="@Html.DisplayFor(modelItem => Model.Img)" /><br></a>
-            <a asp-controller="Items" asp-route-filterBy="@Model.Tag1" class="rounded" style="background: #008aff; color: white; ">&nbsp @Model.Tag1 &nbsp<br></a>
-            <a asp-controller="Items" asp-route-filterBy="@Model.Tag2" class="rounded" style="background: #008aff; color: white; ">&nbsp @Model.Tag2 &nbsp<br></a>
-            <a asp-controller="Items" asp-route-filterBy="@Model.Tag3" class="rounded" style="background: #008aff; color: white; ">&nbsp @Model.Tag3 &nbsp<br></a>
+
+            <a asp-controller="Items" asp-route-filterBy="@Model.Tag1" class="rounded" style="background: #008aff; color: white; "> @Model.Tag1  </a>&nbsp
+            <a asp-controller="Items" asp-route-filterBy="@Model.Tag2" class="rounded" style="background: #008aff; color: white; "> @Model.Tag2 </a>&nbsp
+            <a asp-controller="Items" asp-route-filterBy="@Model.Tag3" class="rounded" style="background: #008aff; color: white; "> @Model.Tag3 </a>&nbsp
         </div>
         <div class="col-sm-4 ">
             <p class="text-left ">@Model.Description</p>
+            @if (Model.ScoreCount > 0)
+            {
+                @if (Model.AvgScore >= 7)
+                {
+                    <div class=" text-center rating" style="background-color:#4cff00">
+                        @Model.AvgScore.ToString("f")
+                    </div>
+                }
+                else if (Model.AvgScore >= 5)
+                {
+                    <div class="text-center rating" style="background-color:#ffd800">
+                        @Model.AvgScore.ToString("f")
+                    </div>
+                }
+                else
+                {
+                    <div class="text-center rating" style="background-color:#ff0000">
+                        @Model.AvgScore.ToString("f")
+                    </div>
+                }
+            }
         </div>
         <div class="col-sm-4">
 

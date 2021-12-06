@@ -42,6 +42,8 @@ namespace Vapor.Controllers
                 "nameD" => _context.Items.OrderByDescending(item => item.Name),
                 "descriptionD" => _context.Items.OrderByDescending(item => item.Description),
                 "priceD" => _context.Items.OrderByDescending(item => item.Price),
+                "score" => _context.Items.OrderBy(item => item.AvgScore),
+                "scoreD" => _context.Items.OrderByDescending(item => item.AvgScore),
                 _ => _context.Items
             };
 
@@ -58,7 +60,7 @@ namespace Vapor.Controllers
 
             ViewData["Tags"] = _context.Tags.ToList();
             ViewData["FilterBy"] = filterBy;
-
+            ViewData["Reviews"] = _context.Reviews.ToList<Review>();
             ViewData["PageCount"] = pageCount;
             ViewData["CurrentPage"] = page;
             ViewData["SortBy"] = sortBy;
@@ -94,16 +96,16 @@ namespace Vapor.Controllers
         }
 
         // GET: Items/Details/5
-        public async Task<IActionResult> Details(Guid? id,bool rand=false)
+        public async Task<IActionResult> Details(Guid? id, bool rand = false)
         {
             ViewData["Reviews"] = _context.Reviews.ToList();
-
+            ViewData["User"] = await signInManager.UserManager.GetUserAsync(User);
             if (id == null && !rand)
             {
                 return NotFound();
             }
 
-            if(rand)
+            if (rand)
             {
                 Random r = new();
                 var arr = _context.Items.ToList<Item>();
@@ -112,7 +114,7 @@ namespace Vapor.Controllers
 
             var item = await _context.Items
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (item == null && !rand) 
+            if (item == null && !rand)
             {
                 return NotFound();
             }
@@ -257,7 +259,7 @@ namespace Vapor.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> AddReview(Guid id, IFormCollection collection)
+        public async Task<IActionResult> AddReview(Guid id,string username,IFormCollection collection) 
         {
             if (ModelState.IsValid)
             {
@@ -267,14 +269,39 @@ namespace Vapor.Controllers
                     Score = Convert.ToInt32(collection["r.Score"]),
                     Date = DateTime.Now
                 };
+
+                var rnd = new[] { "aboba", "fireg", "pops", "goga", "sasdfx", "killer", "asd312", "pripapupa", "popster", "llkers", "kiboe", "milfhunter", "kuckoi", "roldan" };
+                Random r = new();
                 review.Id = Guid.NewGuid();
                 review.Item = _context.Items.FirstOrDefault(item => item.Id == id);
+                if (User.IsInRole("Admin"))
+                    review.Author = rnd[r.Next(0, rnd.Length)]+ r.Next(0, rnd.Length).ToString();
+                else
+                    review.Author = username;
+                //var item = _context.Items.FirstOrDefault(item => item.Id == id);
+                review.Item.ScoreCount++;
+                review.Item.ScoreSumm += Convert.ToInt32(collection["r.Score"]);
+                review.Item.UpdateAvgScore();
+                _context.Update(review.Item);
                 _context.Add(review);
 
                 await _context.SaveChangesAsync();
                 return RedirectToRoute(new { controller = "Items", action = "Details", id = id });
             }
             return BadRequest();
+        }
+
+        public async Task<IActionResult> DeleteReview(Guid revid,Guid itemid)
+        {
+            var item = _context.Items.Find(itemid);
+            var review = _context.Reviews.Find(revid);
+            item.ScoreCount--;
+            item.ScoreSumm -= review.Score;
+            item.UpdateAvgScore();
+            _context.Items.Update(item);
+            _context.Reviews.Remove(review);
+            await _context.SaveChangesAsync();
+            return RedirectToRoute(new { controller = "Items", action = "Details", id = itemid });
         }
 
         [Authorize]
