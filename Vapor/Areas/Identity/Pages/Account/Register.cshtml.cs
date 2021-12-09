@@ -46,16 +46,17 @@ namespace Vapor.Areas.Identity.Pages.Account
 
         public class InputModel
         {
-            [Required]
+            [Required(ErrorMessage = "The {0} field is required.")]
             [EmailAddress]
             [Display(Name = "Email")]
             public string Email { get; set; }
-            [Required]
-            [DataType(DataType.Text)]
-            [Display(Name = "Username")]
-            public string Username { get; set; }
 
-            [Required]
+            //[Required(ErrorMessage = "The {0} field is required.")]
+            //[DataType(DataType.Text)]
+            //[Display(Name = "Username")]
+            //public string Username { get; set; }
+
+            [Required(ErrorMessage = "The {0} field is required.")]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             [DataType(DataType.Password)]
             [Display(Name = "Password")]
@@ -79,7 +80,7 @@ namespace Vapor.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new User { UserName = Input.Username, Email = Input.Email };
+                var user = new User { UserName = Input.Email /*Input.Username*/, Email = Input.Email };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {

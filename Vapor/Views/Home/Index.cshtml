@@ -1,5 +1,4 @@
 ﻿@{
-    ViewData["Title"] = "Главная";
     bool isWlist = (bool)(ViewData["IsWlist"]);
     var CItem1 = ViewData["CItem1"] as Item;
     var CItem2 = ViewData["CItem2"] as Item;
@@ -14,7 +13,12 @@
     var Iarr3 = new[] { CItem3.Img2, CItem3.Img3, CItem3.Img4, CItem3.Img5 };
 
     var SaleItems = ViewData["SaleItems"] as List<Item>;
+}
 
+
+@inject IHtmlLocalizer<SharedResource> Localizer
+@{
+    ViewData["Title"] = Localizer["Home"];
 }
 
 @inject UserManager<User> UserManager
@@ -27,11 +31,11 @@
                     <div class="card-header">
                         @if (isWlist)
                         {
-                            <h3>У вас в желаемом:</h3>
+                            <h3>@Localizer["In your wishlist"]:</h3>
                         }
                         else
                         {
-                            <h3>Посмотрите также:</h3>
+                            <h3>@Localizer["Look also"]:</h3>
                         }
 
                     </div>
@@ -62,7 +66,7 @@
 
 
                                             }<br />
-                                            <a class="btn btn-danger" asp-controller="Items" asp-action="Details" asp-route-Id=@CItem1.Id>Подробнее</a>
+                                            <a class="btn btn-danger" asp-controller="Items" asp-action="Details" asp-route-Id=@CItem1.Id>@Localizer["Details"]</a>
                                         </div>
                                     </div>
                                     <div class="carousel-item">
@@ -82,7 +86,7 @@
 
 
                                             }<br />
-                                            <a class="btn btn-danger" asp-controller="Items" asp-action="Details" asp-route-Id=@CItem2.Id>Подробнее</a>
+                                            <a class="btn btn-danger" asp-controller="Items" asp-action="Details" asp-route-Id=@CItem2.Id>@Localizer["Details"]</a>
                                         </div>
                                     </div>
                                     <div class="carousel-item">
@@ -100,7 +104,7 @@
                                                 <a style="font-size:16px ;color:#4cff00; background-color:#1e6500">&nbsp-@sale%&nbsp</a>
                                             }
                                             <br />
-                                            <a class=" btn btn-danger" asp-controller="Items" asp-action="Details" asp-route-Id="@CItem3.Id">Подробнее</a>
+                                            <a class=" btn btn-danger" asp-controller="Items" asp-action="Details" asp-route-Id="@CItem3.Id">@Localizer["Details"]</a>
                                         </div>
                                     </div>
                                 </div>
@@ -124,12 +128,12 @@
             <div class="col-md-3">
                 <div class="card" style="background-color: #2C2F31">
 
-                    <a class="btn btn-outline-dark text-center text-white" asp-controller="Items" asp-action="Index">Все игры</a>
-                    <a class="btn btn-outline-dark text-center text-white" asp-controller="Items" asp-action="Details" asp-route-rand="@true">Случайная игра</a>
+                    <a class="btn btn-outline-dark text-center text-white" asp-controller="Items" asp-action="Index">@Localizer["All games"]</a>
+                    <a class="btn btn-outline-dark text-center text-white" asp-controller="Items" asp-action="Details" asp-route-rand="@true">@Localizer["Random Game"]</a>
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <a class="btn btn-outline-dark text-center text-white" asp-controller="Items" asp-action="ShopCart">Корзина</a>
-                        <a class="btn btn-outline-dark text-center text-white" asp-controller="Items" asp-action="WishList">Желаемое</a>
+                        <a class="btn btn-outline-dark text-center text-white" asp-controller="Items" asp-action="ShopCart">@Localizer["Shop cart"]</a>
+                        <a class="btn btn-outline-dark text-center text-white" asp-controller="Items" asp-action="WishList">@Localizer["Wishlist"]</a>
                     }
 
 
@@ -150,11 +154,11 @@
 <br />
 <div class="card" style="background-color: #2C2F31">
     <div class="card-header">
-        <h5>Скидки:</h5>
+        <h5>@Localizer["Sale"]:</h5>
     </div>
 
-    <table class="card-body" style="background-color: #181A1B">
-        <tbody>
+    <table style="background-color: #2C2F31">
+        <tbody class="card-body">
             @foreach (var item in SaleItems)
             {
                 <tr>
@@ -170,11 +174,10 @@
 <br />
 <div class="card" style="background-color: #2C2F31">
     <div class="card-header">
-        <h4>Игры с тэгом: <a class="rounded" style="background: #008aff; color: white; ">&nbsp @Tag &nbsp</a> </h4>
-
+        <h4>@Localizer["Games with tag"]: <a class="rounded" style="background: #008aff; color: white; ">&nbsp @Tag &nbsp</a> </h4>
     </div>
 
-    <table class="card-body" style="background-color: #181A1B">
+    <table class="card-body" style="background-color: #2C2F31">
         <tbody>
             @foreach (var item in TagItems)
             {

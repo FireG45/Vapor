@@ -23,4 +23,7 @@ namespace Vapor
                     webBuilder.UseStartup<Startup>();
                 });
     }
+    public class SharedResource
+    {
+    }
 }

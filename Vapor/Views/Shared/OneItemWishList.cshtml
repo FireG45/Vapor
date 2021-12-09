@@ -38,26 +38,17 @@
 
 @model Item
 @using Vapor.Data
+@inject IHtmlLocalizer<SharedResource> Localizer
 @{
     var shopcart = ViewBag.SCart as List<Item>;
     var wishlist = ViewBag.Wlist as List<Item>;
     var sale = Model.Sale * 100;
 
-    //var reviews = ViewData["Reviews"] as List<Review>;
+    CultureInfo.CurrentCulture = new CultureInfo("en-US"); CultureInfo.CurrentUICulture = new CultureInfo("en-US");
 
-    //Model.ScoreCount = 0;
-    //Model.ScoreSumm = 0;
-
-    //if (reviews != null)
-    //    foreach (var rev in reviews)
-    //        if (rev.Item == Model)
-    //        {
-    //            Model.ScoreCount++;
-    //            Model.ScoreSumm += rev.Score;
-    //        }
-    //Model.UpdateAvgScore();
 
 }
+
 @inject StoreContext _context
 <div class="card text-white" style="background-color: #2C2F31">
     <h5 class="card-header"><a asp-controller="Items" asp-action="Details" asp-route-id="@Model.Id" class="text-left">@Html.DisplayFor(modelItem => Model.Name)</a></h5>
@@ -114,20 +105,20 @@
             <div class="">
                 @if (shopcart == null || Model.Id != shopcart.FirstOrDefault(m => m.Id == Model.Id)?.Id)
                 {
-                    <p><a class=" btn btn-outline-danger" asp-controller="Items" asp-action="ToCart" asp-route-Id="@Model">Добавить в корзину</a></p>
+                    <p><a class=" btn btn-outline-danger" asp-controller="Items" asp-action="ToCart" asp-route-Id="@Model">@Localizer["Add to cart"]</a></p>
                 }
                 else
                 {
-                    <p><a class=" btn btn-outline-danger" asp-controller="Items" asp-action="ShopCart" asp-route-Id="@Model">Перейти к корзине</a></p>
+                    <p><a class=" btn btn-outline-danger" asp-controller="Items" asp-action="ShopCart" asp-route-Id="@Model">@Localizer["Go to cart"]</a></p>
                 }
                 @*@if (wishlist == null || Model.Id != wishlist.FirstOrDefault(m => m.Id == Model.Id)?.Id)
-                {
-                    <p><a class=" btn btn-outline-info" asp-controller="Items" asp-action="ToWlist" asp-route-Id="@Model">Добавить в желаемое</a></p>
-                }
-                else
-                {
-                    <p><a class=" btn btn-outline-info" asp-controller="Items" asp-action="Wishlist" asp-route-Id="@Model">Перейти в желаемое</a></p>
-                }*@
+                    {
+                        <p><a class=" btn btn-outline-info" asp-controller="Items" asp-action="ToWlist" asp-route-Id="@Model">Добавить в желаемое</a></p>
+                    }
+                    else
+                    {
+                        <p><a class=" btn btn-outline-info" asp-controller="Items" asp-action="Wishlist" asp-route-Id="@Model">Перейти в желаемое</a></p>
+                    }*@
             </div>
 
         </div>

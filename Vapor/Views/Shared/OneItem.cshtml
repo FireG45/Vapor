@@ -1,9 +1,12 @@
 ﻿@model Item
 @using Vapor.Data
+@inject IHtmlLocalizer<SharedResource> Localizer
+
+
 @{
     var shopcart = ViewBag.SCart as List<Item>;
     var wishlist = ViewBag.Wlist as List<Item>;
-    var sale = Model.Sale*100;
+    var sale = Model.Sale * 100;
 
     //var reviews = ViewData["Reviews"] as List<Review>;
 
@@ -67,28 +70,28 @@
             {
                 <p>
                     <a style="font-size:16px ;color:#4cff00; background-color:#1e6500">&nbsp-@sale%&nbsp</a>&nbsp
-                    <s  style="color:gray">@Model.Price.ToString("c")</s>
+                    <s style="color:gray">@Model.Price.ToString("c")</s>
                 </p>
-                <h4 class="text" >@Model.SalePrice().ToString("c")</h4>
+                <h4 class="text">@Model.SalePrice().ToString("c")</h4>
 
             }
 
             <div class="">
                 @if (shopcart == null || Model.Id != shopcart.FirstOrDefault(m => m.Id == Model.Id)?.Id)
                 {
-                    <p><a class=" btn btn-outline-danger" asp-controller="Items" asp-action="ToCart" asp-route-Id="@Model">Добавить в корзину</a></p>
+                    <p><a class=" btn btn-outline-danger" asp-controller="Items" asp-action="ToCart" asp-route-Id="@Model">@Localizer["Add to cart"]</a></p>
                 }
                 else
                 {
-                    <p><a class=" btn btn-outline-danger" asp-controller="Items" asp-action="ShopCart" asp-route-Id="@Model">Перейти к корзине</a></p>
+                    <p><a class=" btn btn-outline-danger" asp-controller="Items" asp-action="ShopCart" asp-route-Id="@Model">@Localizer["Go to cart"]</a></p>
                 }
                 @if (wishlist == null || Model.Id != wishlist.FirstOrDefault(m => m.Id == Model.Id)?.Id)
                 {
-                    <p><a class=" btn btn-outline-info" asp-controller="Items" asp-action="ToWlist" asp-route-Id="@Model">Добавить в желаемое</a></p>
+                    <p><a class=" btn btn-outline-info" asp-controller="Items" asp-action="ToWlist" asp-route-Id="@Model">@Localizer["Add to wishlist"]</a></p>
                 }
                 else
                 {
-                    <p><a class=" btn btn-outline-info" asp-controller="Items" asp-action="Wishlist" asp-route-Id="@Model">Перейти в желаемое</a></p>
+                    <p><a class=" btn btn-outline-info" asp-controller="Items" asp-action="Wishlist" asp-route-Id="@Model">@Localizer["Go to cart"]</a></p>
                 }
             </div>
 

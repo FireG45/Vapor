@@ -1,5 +1,9 @@
 ﻿@model IEnumerable<Vapor.Models.Item>
+@using Microsoft.AspNetCore.Mvc.Localization
+@using System.Globalization
 
+
+@inject IHtmlLocalizer<SharedResource> Localizer
 @{
 
 
@@ -8,8 +12,10 @@
     string sortBy = ViewData["SortBy"] as string ?? "";
     string filterBy = ViewData["FilterBy"] as string ?? "";
 
-    ViewData["Title"] = filterBy != "" ? filterBy : "Все игры";
+    ViewData["Title"] = filterBy != "" ? filterBy : Localizer["All games"];
 
+    //CultureInfo.CurrentCulture = new CultureInfo("en-US");
+    //CultureInfo.CurrentUICulture = new CultureInfo("en-US");
 }
 @{
     var tags = ViewData["Tags"] as List<Tag>;
@@ -19,13 +25,13 @@
 }
 
 
-<div class="card" style="background-color: #181A1B">
+<div class="card" style="background-color: #2C2F31">
 
     <div class="card-header row text-white">
         <div class="text-center col-sm-4">
             @if (sortBy == "name")
             {<a asp-action="Index" asp-route-page="@(currentPage)" asp-route-filterBy="@filterBy" asp-route-sort-by="nameD">
-                    Название
+                    @Localizer["Title"]
                     @if (sortBy == "name")
                     {<span>↓</span>}
                     @if (sortBy == "nameD")
@@ -34,7 +40,7 @@
             }
             else
             {<a asp-action="Index" asp-route-page="@(currentPage)" asp-route-filterBy="@filterBy" asp-route-sort-by="name">
-                    Название
+                    @Localizer["Title"]
                     @if (sortBy == "name")
                     {<span>↓</span>}
                     @if (sortBy == "nameD")
@@ -47,7 +53,7 @@
             @if (sortBy == "score")
             {
                 <a class="text-center" asp-action="Index" asp-route-page="@(currentPage)" asp-route-filterBy="@filterBy" asp-route-sort-by="scoreD">
-                    Рейтинг
+                    @Localizer["Rating"]
                     @if (sortBy == "score")
                     {<span class="text-center">↓</span>}
                     @if (sortBy == "scoreD")
@@ -57,7 +63,8 @@
             else
             {
                 <a class="text-center" asp-action="Index" asp-route-page="@(currentPage)" asp-route-filterBy="@filterBy" asp-route-sort-by="score">
-                    Рейтинг
+                    @Localizer["Rating"]
+
                     @if (sortBy == "score")
                     {<span class="text-center">↓</span>}
                     @if (sortBy == "scoreD")
@@ -70,7 +77,8 @@
             @if (sortBy == "price")
             {
                 <a class="text-center" asp-action="Index" asp-route-page="@(currentPage)" asp-route-filterBy="@filterBy" asp-route-sort-by="priceD">
-                    Цена
+                    @Localizer["Price"]
+
                     @if (sortBy == "price")
                     {<span class="text-center">↓</span>}
                     @if (sortBy == "priceD")
@@ -80,7 +88,8 @@
             else
             {
                 <a class="text-center" asp-action="Index" asp-route-page="@(currentPage)" asp-route-filterBy="@filterBy" asp-route-sort-by="price">
-                    Цена
+                    @Localizer["Price"]
+
                     @if (sortBy == "price")
                     {<span class="text-center">↓</span>}
                     @if (sortBy == "priceD")
@@ -121,7 +130,10 @@
     @if (currentPage > 1)
     {<a class="btn btn-outline-info" asp-action="Index" asp-route-page="@(currentPage - 1)" asp-route-filterBy="@filterBy" asp-route-sort-by="@sortBy"> 🠔 </a>}
 
-    Страница @currentPage из @pageCount
+    @Localizer["Page"]
+    @currentPage
+    @Localizer["of"]
+    @pageCount
 
     @if (currentPage < pageCount)
     {<a class="btn btn-outline-info" asp-action="Index" asp-route-page="@(currentPage + 1)" asp-route-filterBy="@filterBy" asp-route-sort-by="@sortBy"> ➞ </a>}

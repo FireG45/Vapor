@@ -22,7 +22,7 @@ namespace Vapor.Areas.Identity.Pages.Account.Manage
             _userManager = userManager;
             _signInManager = signInManager;
         }
-
+        [Display(Name = "Username")]
         public string Username { get; set; }
 
         [TempData]

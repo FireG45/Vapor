@@ -10,6 +10,7 @@ using Vapor.Data;
 using Microsoft.AspNetCore.Identity;
 using Vapor.Areas.Identity.Data;
 using System.Text.Json;
+using System.Globalization;
 
 namespace Vapor.Controllers
 {
@@ -27,6 +28,16 @@ namespace Vapor.Controllers
             _context = context;
             _ucontext = ucontext;
             this.signInManager = signInManager;
+        }
+
+        public string GetCulture(string code = "")
+        {
+            if (!String.IsNullOrEmpty(code))
+            {
+                CultureInfo.CurrentCulture = new CultureInfo(code);
+                CultureInfo.CurrentUICulture = new CultureInfo(code);
+            }
+            return $"CurrentCulture:{CultureInfo.CurrentCulture.Name}, CurrentUICulture:{CultureInfo.CurrentUICulture.Name}";
         }
 
         public async Task<IActionResult> Index()

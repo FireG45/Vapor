@@ -1,35 +1,46 @@
 ﻿@model Item
-@{ var sale = Model.Sale * 100;}
-    <div class="card text-white" style="background-color: #2C2F31">
-        <h5 class="card-header"><a asp-action="Details" asp-route-id="@Model.Id" class="text-left">@Html.DisplayFor(modelItem => Model.Name)</a></h5>
+@inject IHtmlLocalizer<SharedResource> Localizer
+
+@{ 
+
+    var sale = Model.Sale * 100;
+
+    CultureInfo.CurrentCulture = new CultureInfo("en-US"); CultureInfo.CurrentUICulture = new CultureInfo("en-US");
 
 
-        <div class="row card-body">
-            <div class="col-sm-4">
-                <a asp-action="Details" asp-route-id="@Model.Id"><img class="img-thumbnail" style="background-color: #181A1B;" src="@Html.DisplayFor(modelItem => Model.Img)" /><br></a>
-                <a asp-controller="Items" asp-route-filterBy="@Model.Tag1" class="rounded" style="background: #008aff; color: white; ">&nbsp @Model.Tag1 &nbsp<br></a>
-                <a asp-controller="Items" asp-route-filterBy="@Model.Tag2" class="rounded" style="background: #008aff; color: white; ">&nbsp @Model.Tag2 &nbsp<br></a>
-                <a asp-controller="Items" asp-route-filterBy="@Model.Tag3" class="rounded" style="background: #008aff; color: white; ">&nbsp @Model.Tag3 &nbsp<br></a>
-            </div>
-            <div class="col-sm-4 ">
-                <p class="text-left ">@Model.Description</p>
-            </div>
+    }
 
-            <div class="col-sm-4">
-                @if (Model.Sale == 0)
-                {
-                    <h4 class="text-center">@Model.Price.ToString("c")</h4>
-                }
-                else
-                {
-                    <p class="text-center">
-                        <a style="font-size:16px ;color:#4cff00; background-color:#1e6500">&nbsp-@sale%&nbsp</a>&nbsp
-                        <s>@Model.Price.ToString("c")</s>
-                    </p>
-                    <h4 class="text-center">@Model.SalePrice().ToString("c")</h4>
 
-                }
-                <p><a class=" btn btn-outline-danger" asp-controller="Items" asp-action="DeleteFromCart" asp-route-Id="@Model">Удалить из корзины</a></p>
-            </div>
+<div class="card text-white" style="background-color: #2C2F31">
+    <h5 class="card-header"><a asp-action="Details" asp-route-id="@Model.Id" class="text-left">@Html.DisplayFor(modelItem => Model.Name)</a></h5>
+
+
+    <div class="row card-body">
+        <div class="col-sm-4">
+            <a asp-action="Details" asp-route-id="@Model.Id"><img class="img-thumbnail" style="background-color: #181A1B;" src="@Html.DisplayFor(modelItem => Model.Img)" /><br></a>
+            <a asp-controller="Items" asp-route-filterBy="@Model.Tag1" class="rounded" style="background: #008aff; color: white; ">&nbsp @Model.Tag1 &nbsp<br></a>
+            <a asp-controller="Items" asp-route-filterBy="@Model.Tag2" class="rounded" style="background: #008aff; color: white; ">&nbsp @Model.Tag2 &nbsp<br></a>
+            <a asp-controller="Items" asp-route-filterBy="@Model.Tag3" class="rounded" style="background: #008aff; color: white; ">&nbsp @Model.Tag3 &nbsp<br></a>
+        </div>
+        <div class="col-sm-4 ">
+            <p class="text-left ">@Model.Description</p>
+        </div>
+
+        <div class="col-sm-4">
+            @if (Model.Sale == 0)
+            {
+                <h4 class="text-center">@Model.Price.ToString("c")</h4>
+            }
+            else
+            {
+                <p class="text-center">
+                    <a style="font-size:16px ;color:#4cff00; background-color:#1e6500">&nbsp-@sale%&nbsp</a>&nbsp
+                    <s>@Model.Price.ToString("c")</s>
+                </p>
+                <h4 class="text-center">@Model.SalePrice().ToString("c")</h4>
+
+            }
+            <p><a class=" btn btn-outline-danger" asp-controller="Items" asp-action="DeleteFromCart" asp-route-Id="@Model">@Localizer["Delete from cart"]</a></p>
         </div>
     </div>
+</div>

@@ -189,7 +189,7 @@ namespace Vapor.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Name,Description,Price,Sale,Img,Img2,Img3,Img4,Img5,Tag1,Tag2,Tag3")] Item item)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Name,Description,Price,Sale,Vid,Img,Img2,Img3,Img4,Img5,Tag1,Tag2,Tag3")] Item item)
         {
             if (id != item.Id)
             {

@@ -1,10 +1,16 @@
 ﻿@model IEnumerable<Item>
+
+
+
+@{
+    //CultureInfo.CurrentCulture = new CultureInfo("en-US"); CultureInfo.CurrentUICulture = new CultureInfo("en-US");
+    }
+@inject IHtmlLocalizer<SharedResource> Localizer
 @{
     decimal sum = 0;
-    ViewData["Title"] = "Корзина";
+    ViewData["Title"] = Localizer["Shop cart"];
 }
-
-<h2>Корзина</h2>
+<h2>@Localizer["Shopcart"]</h2>
 <table class="table-borderless">
 
     <tbody>
@@ -30,6 +36,6 @@
 
 
 <h4 class="text-center">
-    Сумма : @sum.ToString("c")<br>
-    <a class=" btn btn-outline-danger" asp-controller="Items" asp-action="Summary">Оплатить</a>
+    @Localizer["Summary"] : @sum.ToString("c")<br>
+    <a class=" btn btn-outline-danger" asp-controller="Items" asp-action="Summary">@Localizer["Pay"]</a>
 </h4>
