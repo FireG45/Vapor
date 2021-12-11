@@ -17,7 +17,7 @@
     <style type="text/css">
         .rating {
             text-shadow: 1px 1px 2px black;
-            margin: 0 0 0 auto;
+            margin: 0 0 0;
             background: #666;
             font-weight: 800;
             border-radius: 2px;
@@ -57,7 +57,7 @@
 <body style="background-color: #181A1B; background: linear-gradient(#181A1B, #2C2F31) fixed; ">
     <header>
 
-        <nav class="navbar navbar-expand-md navbar-dark fixed-top" style="background-color:#2C2F31">
+        <nav class="navbar navbar-expand-md navbar-dark " style="background-color:#2C2F31">
             <div class="container-fluid">
                 <a class="navbar-brand" asp-controller="Home" asp-action="Index">
                     Vapor
@@ -91,10 +91,7 @@
     </header>
 
     <div class="container ">
-        <p>
-            <br />
-        </p>
-        <main role="main" class="m-5 text-white">
+        <main role="main" class="text-white">
             @RenderBody()
         </main>
     </div>

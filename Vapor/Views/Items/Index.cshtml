@@ -7,136 +7,188 @@
 @{
 
 
-    int pageCount = (ViewData["PageCount"] as int?) ?? 0;
-    int currentPage = (ViewData["CurrentPage"] as int?) ?? 1;
-    string sortBy = ViewData["SortBy"] as string ?? "";
-    string filterBy = ViewData["FilterBy"] as string ?? "";
+	int pageCount = (ViewData["PageCount"] as int?) ?? 0;
+	int currentPage = (ViewData["CurrentPage"] as int?) ?? 1;
+	string sortBy = ViewData["SortBy"] as string ?? "";
+	string filterBy = ViewData["FilterBy"] as string ?? "";
 
-    ViewData["Title"] = filterBy != "" ? filterBy : Localizer["All games"];
+	ViewData["Title"] = filterBy != "" ? filterBy : Localizer["All games"];
 
-    //CultureInfo.CurrentCulture = new CultureInfo("en-US");
-    //CultureInfo.CurrentUICulture = new CultureInfo("en-US");
+	//CultureInfo.CurrentCulture = new CultureInfo("en-US");
+	//CultureInfo.CurrentUICulture = new CultureInfo("en-US");
 }
 @{
-    var tags = ViewData["Tags"] as List<Tag>;
+	var tags = ViewData["Tags"] as List<Tag>;
 
 
-    SelectList tagsSelectList = tags != null ? new SelectList(tags, "Id", "tag") : null;
+	SelectList tagsSelectList = tags != null ? new SelectList(tags, "Id", "tag") : null;
 }
 
+<div class="row">
 
-<div class="card" style="background-color: #2C2F31">
-
-    <div class="card-header row text-white">
-        <div class="text-center col-sm-4">
-            @if (sortBy == "name")
-            {<a asp-action="Index" asp-route-page="@(currentPage)" asp-route-filterBy="@filterBy" asp-route-sort-by="nameD">
-                    @Localizer["Title"]
-                    @if (sortBy == "name")
-                    {<span>↓</span>}
-                    @if (sortBy == "nameD")
-                    {<span>↑</span>}
-                </a>
-            }
-            else
-            {<a asp-action="Index" asp-route-page="@(currentPage)" asp-route-filterBy="@filterBy" asp-route-sort-by="name">
-                    @Localizer["Title"]
-                    @if (sortBy == "name")
-                    {<span>↓</span>}
-                    @if (sortBy == "nameD")
-                    {<span>↑</span>}
-                </a>
-            }
-
-        </div>
-        <div class="text-center col-sm-4">
-            @if (sortBy == "score")
-            {
-                <a class="text-center" asp-action="Index" asp-route-page="@(currentPage)" asp-route-filterBy="@filterBy" asp-route-sort-by="scoreD">
-                    @Localizer["Rating"]
-                    @if (sortBy == "score")
-                    {<span class="text-center">↓</span>}
-                    @if (sortBy == "scoreD")
-                    {<span class="text-center">↑</span>}
-                </a>
-            }
-            else
-            {
-                <a class="text-center" asp-action="Index" asp-route-page="@(currentPage)" asp-route-filterBy="@filterBy" asp-route-sort-by="score">
-                    @Localizer["Rating"]
-
-                    @if (sortBy == "score")
-                    {<span class="text-center">↓</span>}
-                    @if (sortBy == "scoreD")
-                    {<span class="text-center">↑</span>}
-                </a>
-            }
-
-        </div>
-        <div class="text-center col-sm-4">
-            @if (sortBy == "price")
-            {
-                <a class="text-center" asp-action="Index" asp-route-page="@(currentPage)" asp-route-filterBy="@filterBy" asp-route-sort-by="priceD">
-                    @Localizer["Price"]
-
-                    @if (sortBy == "price")
-                    {<span class="text-center">↓</span>}
-                    @if (sortBy == "priceD")
-                    {<span class="text-center">↑</span>}
-                </a>
-            }
-            else
-            {
-                <a class="text-center" asp-action="Index" asp-route-page="@(currentPage)" asp-route-filterBy="@filterBy" asp-route-sort-by="price">
-                    @Localizer["Price"]
-
-                    @if (sortBy == "price")
-                    {<span class="text-center">↓</span>}
-                    @if (sortBy == "priceD")
-                    {<span class="text-center">↑</span>}
-                </a>
-            }
-
-        </div>
-    </div>
-
-    <div class="card-body">
-        @foreach (var item in Model)
-        {
-            if (filterBy != "" && (item.Tag1 == filterBy || item.Tag2 == filterBy || item.Tag3 == filterBy))
-            {
-                <tr>
-                    <td>
-                        <partial name="OneItem" model="item" />
-                    </td>
-                </tr>
-            }
-            if (filterBy == "")
-            {
-                <tr>
-                    <td>
-                        <partial name="OneItem" model="item" />
-                    </td>
-                </tr>
-            }
-        }
-    </div>
-</div>
+	<div class="card col-3" style="background-color: #2C2F31">
 
 
-<div>
-    @if (currentPage > 1)
-    {<a class="btn btn-outline-info" asp-action="Index" asp-route-page="1" asp-route-filterBy="@filterBy" asp-route-sort-by="@sortBy"> На первую </a>}
-    @if (currentPage > 1)
-    {<a class="btn btn-outline-info" asp-action="Index" asp-route-page="@(currentPage - 1)" asp-route-filterBy="@filterBy" asp-route-sort-by="@sortBy"> 🠔 </a>}
+		<ul class="list-group list-group-flush" style="background-color: #2C2F31">
+			<li class="list-group-item" style="background-color: #2C2F31">
+				@if (sortBy == "name")
+				{
+					<a asp-action="Index" asp-route-page="@(currentPage)" asp-route-filterBy="@filterBy" asp-route-sort-by="nameD">
+						@Localizer["Title"]
+						@if (sortBy == "name")
+						{
+							<span>↑</span>
+						}
+						@if (sortBy == "nameD")
+						{
+							<span>↓</span>
+						}
+					</a>
+				}
+				else
+				{
+					<a asp-action="Index" asp-route-page="@(currentPage)" asp-route-filterBy="@filterBy" asp-route-sort-by="name">
+						@Localizer["Title"]
+						@if (sortBy == "name")
+						{
+							<span>↑</span>
+						}
+						@if (sortBy == "nameD")
+						{
+							<span>↓</span>
+						}
+					</a>
+				}
+			</li>
 
-    @Localizer["Page"]
-    @currentPage
-    @Localizer["of"]
-    @pageCount
+			<li class="list-group-item" style="background-color: #2C2F31">
+				@if (sortBy == "score")
+				{
+					<a asp-action="Index" asp-route-page="@(currentPage)" asp-route-filterBy="@filterBy" asp-route-sort-by="scoreD">
+						@Localizer["Rating"]
+						@if (sortBy == "score")
+						{
+							<span class="text-center">↑</span>
+						}
+						@if (sortBy == "scoreD")
+						{
+							<span class="text-center">↓</span>
+						}
+					</a>
+				}
+				else
+				{
+					<a asp-action="Index" asp-route-page="@(currentPage)" asp-route-filterBy="@filterBy" asp-route-sort-by="score">
+						@Localizer["Rating"]
 
-    @if (currentPage < pageCount)
-    {<a class="btn btn-outline-info" asp-action="Index" asp-route-page="@(currentPage + 1)" asp-route-filterBy="@filterBy" asp-route-sort-by="@sortBy"> ➞ </a>}
-    @if (currentPage < pageCount)
-    {<a class="btn btn-outline-info text-white" asp-action="Index" asp-route-page="@pageCount" asp-route-filterBy="@filterBy" asp-route-sort-by="@sortBy"> На последнюю </a>}
+						@if (sortBy == "score")
+						{
+							<span class="text-center">↑</span>
+						}
+						@if (sortBy == "scoreD")
+						{
+							<span class="text-center">↓</span>
+						}
+					</a>
+				}
+			</li>
+
+			<li class="list-group-item" style="background-color: #2C2F31">
+				@if (sortBy == "price")
+				{
+					<a asp-action="Index" asp-route-page="@(currentPage)" asp-route-filterBy="@filterBy" asp-route-sort-by="priceD">
+						@Localizer["Price"]
+
+						@if (sortBy == "price")
+						{
+							<span class="text-center">↑</span>
+						}
+						@if (sortBy == "priceD")
+						{
+							<span class="text-center">↓</span>
+						}
+					</a>
+				}
+				else
+				{
+					<a asp-action="Index" asp-route-page="@(currentPage)" asp-route-filterBy="@filterBy" asp-route-sort-by="price">
+						@Localizer["Price"]
+
+						@if (sortBy == "price")
+						{
+							<span class="text-center">↓</span>
+						}
+						@if (sortBy == "priceD")
+						{
+							<span class="text-center">↑</span>
+						}
+					</a>
+				}
+			</li>
+		</ul>
+
+		<div class="card-body">
+
+			<div data-bs-spy="scroll" class="scrollspy-example" tabindex="0">
+				@foreach (var tag in tags)
+				{
+					<a asp-controller="Items" asp-route-filterBy="@tag.tag" class="rounded" style="background: #008aff; color: white; word-break: break-word; "> @tag.tag </a><br />
+				}
+			</div>
+
+
+		</div>
+	</div>
+	<div class="col-9">
+
+
+
+		<div>
+			@foreach (var item in Model)
+			{
+				if (filterBy != "" && (item.Tag1 == filterBy || item.Tag2 == filterBy || item.Tag3 == filterBy))
+				{
+					<tr>
+						<td>
+							<partial name="OneItem" model="item" />
+						</td>
+					</tr>
+				}
+				if (filterBy == "")
+				{
+					<tr>
+						<td>
+							<partial name="OneItem" model="item" />
+						</td>
+					</tr>
+				}
+			}
+		</div>
+	</div>
+
+
+	<div>
+		@if (currentPage > 1)
+		{
+			<a class="btn btn-outline-info" asp-action="Index" asp-route-page="1" asp-route-filterBy="@filterBy" asp-route-sort-by="@sortBy"> На первую </a>
+		}
+		@if (currentPage > 1)
+		{
+			<a class="btn btn-outline-info" asp-action="Index" asp-route-page="@(currentPage - 1)" asp-route-filterBy="@filterBy" asp-route-sort-by="@sortBy"> 🠔 </a>
+		}
+
+		@Localizer["Page"]
+		@currentPage
+		@Localizer["of"]
+		@pageCount
+
+		@if (currentPage < pageCount)
+		{
+			<a class="btn btn-outline-info" asp-action="Index" asp-route-page="@(currentPage + 1)" asp-route-filterBy="@filterBy" asp-route-sort-by="@sortBy"> ➞ </a>
+		}
+		@if (currentPage < pageCount)
+		{
+			<a class="btn btn-outline-info text-white" asp-action="Index" asp-route-page="@pageCount" asp-route-filterBy="@filterBy" asp-route-sort-by="@sortBy"> На последнюю </a>
+		}
+	</div>
 </div>

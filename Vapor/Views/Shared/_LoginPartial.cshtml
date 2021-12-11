@@ -1,6 +1,10 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using Vapor.Areas.Identity.Data
 
+@inject IHtmlLocalizer<SharedResource> Localizer
+
+
+
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
 
@@ -26,11 +30,11 @@
 
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 
-                    <a id="manage" class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Аккаунт</a>
-                    <a class="dropdown-item"  asp-controller="Items" asp-action="WishList">Желаемое</a>
+                    <a id="manage" class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@Localizer["Account"]</a>
+                    <a class="dropdown-item"  asp-controller="Items" asp-action="WishList">@Localizer["Wishlist"]</a>
                         <a id="logoutForm" class="dropdown-item" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
                             @*<button id="logout" type="submit" class="nav-link btn text-dark">Выйти</button>*@
-                            Выйти
+                            @Localizer["Log out"]
                         </a>
 
 
@@ -44,10 +48,10 @@
     else
     {
         <li class="nav-item">
-            <a class="nav-link text" id="register" asp-area="Identity" asp-page="/Account/Register">Зарегистрироваться</a>
+            <a class="nav-link text" id="register" asp-area="Identity" asp-page="/Account/Register">@Localizer["Register"]</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link text" id="login" asp-area="Identity" asp-page="/Account/Login">Войти</a>
+            <a class="nav-link text" id="login" asp-area="Identity" asp-page="/Account/Login">@Localizer["Log in"]</a>
         </li>
     }
 </ol>
