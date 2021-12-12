@@ -44,7 +44,7 @@
     var wishlist = ViewBag.Wlist as List<Item>;
     var sale = Model.Sale * 100;
 
-    CultureInfo.CurrentCulture = new CultureInfo("en-US"); CultureInfo.CurrentUICulture = new CultureInfo("en-US");
+    //CultureInfo.CurrentCulture = new CultureInfo("en-US"); CultureInfo.CurrentUICulture = new CultureInfo("en-US");
 
 
 }
@@ -111,7 +111,7 @@
                 {
                     <p><a class=" btn btn-outline-danger" asp-controller="Items" asp-action="ShopCart" asp-route-Id="@Model">@Localizer["Go to cart"]</a></p>
                 }
-                @*@if (wishlist == null || Model.Id != wishlist.FirstOrDefault(m => m.Id == Model.Id)?.Id)
+@*                @if (wishlist == null || Model.Id != wishlist.FirstOrDefault(m => m.Id == Model.Id)?.Id)
                     {
                         <p><a class=" btn btn-outline-info" asp-controller="Items" asp-action="ToWlist" asp-route-Id="@Model">Добавить в желаемое</a></p>
                     }
@@ -119,6 +119,7 @@
                     {
                         <p><a class=" btn btn-outline-info" asp-controller="Items" asp-action="Wishlist" asp-route-Id="@Model">Перейти в желаемое</a></p>
                     }*@
+                    <p><a class=" btn btn-outline-info" asp-controller="Items" asp-action="DeleteFromWlist" asp-route-Id="@Model">@Localizer["Delete from Wishlist"]</a></p>
             </div>
 
         </div>

@@ -1,57 +1,67 @@
 ﻿@using Microsoft.AspNetCore.Identity
+@using System.Text.Json
 @using Vapor.Areas.Identity.Data
 
 @inject IHtmlLocalizer<SharedResource> Localizer
 
-
+@{
+	var ShopCartCount = ViewData["ShopCartCount"] as Nullable<int>;
+}
 
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
 
+@{
+	var user = await UserManager.GetUserAsync(User);
+
+	List<Item> cart = (user != null && user.ShopCart != null) ? JsonSerializer.Deserialize<List<Item>>(user.ShopCart) : null;
+	var count = cart != null ? cart.Count : 0;
+}
+
 <ol class="navbar-nav">
-    @if (SignInManager.IsSignedIn(User))
-    {
-        <li class="nav-item">
-            @*<a id="manage" class="nav-link text-light" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
-                    <i class="fa fa-user-circle" aria-hidden="true"></i>
+	@if (SignInManager.IsSignedIn(User))
+	{
+		<li class="nav-item">
+			@*<a id="manage" class="nav-link text-light" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
+				<i class="fa fa-user-circle" aria-hidden="true"></i>
 
-                    @UserManager.GetUserName(User)
+				@UserManager.GetUserName(User)
 
-                </a>*@
-            <div class="dropdown">
-
-
-
-                <a class="dropleft text-light" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="fa fa-user-circle" aria-hidden="true"></i>
-                    @UserManager.GetUserName(User)
-
-                </a>
-
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-
-                    <a id="manage" class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@Localizer["Account"]</a>
-                    <a class="dropdown-item"  asp-controller="Items" asp-action="WishList">@Localizer["Wishlist"]</a>
-                        <a id="logoutForm" class="dropdown-item" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                            @*<button id="logout" type="submit" class="nav-link btn text-dark">Выйти</button>*@
-                            @Localizer["Log out"]
-                        </a>
+				</a>*@
+			<div class="dropdown">
 
 
-                </div>
-                <a class="text-white" asp-controller="Items" asp-action="ShopCart">
-                     <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                </a>
-            </div>
-        </li>
-    }
-    else
-    {
-        <li class="nav-item">
-            <a class="nav-link text" id="register" asp-area="Identity" asp-page="/Account/Register">@Localizer["Register"]</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link text" id="login" asp-area="Identity" asp-page="/Account/Login">@Localizer["Log in"]</a>
-        </li>
-    }
+
+				<a class="dropleft text-light" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					<i class="fa fa-user-circle" aria-hidden="true"></i>
+					@*@UserManager.GetUserName(User)*@
+
+				</a>
+
+				<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+
+					<a id="manage" class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@Localizer["Account"]</a>
+					<a class="dropdown-item" asp-controller="Items" asp-action="WishList">@Localizer["Wishlist"]</a>
+					<a id="logoutForm" class="dropdown-item" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+						@*<button id="logout" type="submit" class="nav-link btn text-dark">Выйти</button>*@
+						@Localizer["Log out"]
+					</a>
+
+
+				</div>
+				<a class="text-white" asp-controller="Items" asp-action="ShopCart">
+					@Localizer["Shop cart"] (@count)
+				</a>
+			</div>
+		</li>
+	}
+	else
+	{
+		<li class="nav-item">
+			<a class="nav-link text" id="register" asp-area="Identity" asp-page="/Account/Register">@Localizer["Register"]</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link text" id="login" asp-area="Identity" asp-page="/Account/Login">@Localizer["Log in"]</a>
+		</li>
+	}
 </ol>

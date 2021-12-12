@@ -375,7 +375,7 @@ namespace Vapor.Controllers
 
             return View(items);
         }
-
+        [Authorize]
         public async Task<IActionResult> WishList()
         {
             user = await signInManager.UserManager.GetUserAsync(User);
@@ -388,6 +388,7 @@ namespace Vapor.Controllers
 
             return View(items);
         }
+        [Authorize]
 
         public async Task<IActionResult> Summary()
         {

@@ -1,35 +1,39 @@
 ﻿@using Microsoft.AspNetCore.Mvc.Localization
 @using System.Globalization
-@using Vapor 
+@using Vapor
 @inject IHtmlLocalizer<SharedResource> Localizer
 @{
 
-    //CultureInfo.CurrentCulture = new CultureInfo("en-US"); CultureInfo.CurrentUICulture = new CultureInfo("en-US");
+	//CultureInfo.CurrentCulture = new CultureInfo("en-US"); CultureInfo.CurrentUICulture = new CultureInfo("en-US");
 }
 @{
-    if (ViewData.TryGetValue("ParentLayout", out var parentLayout))
-    {
-        Layout = (string)parentLayout;
-    }
-    else
-    {
-        Layout = "/Areas/Identity/Pages/_Layout.cshtml";
-    }
+	if (ViewData.TryGetValue("ParentLayout", out var parentLayout))
+	{
+		Layout = (string)parentLayout;
+	}
+	else
+	{
+		Layout = "/Areas/Identity/Pages/_Layout.cshtml";
+	}
 }
 
-<h2>@Localizer["Manage your account"]</h2>
 
-<div>
-    <h4>@Localizer["Change your account settings"]</h4>
-    <hr />
-    <div class="row">
-        <div class="col-md-3">
-            <partial name="_ManageNav" />
-        </div>
-        <div class="col-md-9">
-            @RenderBody()
-        </div>
-    </div>
+<div class="card" style="background-color:#2C2F31">
+	<div class="card-header">
+		<h2>@Localizer["Manage your account"]</h2>
+		<h4>@Localizer["Change your account settings"]</h4>
+	</div>
+
+	<hr />
+	<div class="row">
+		<div class="col-md-3">
+			<partial name="_ManageNav" />
+		</div>
+		<div class="col-md-9">
+			@RenderBody()
+		</div>
+	</div>
+	<br />
 </div>
 
 @section Scripts {

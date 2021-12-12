@@ -144,8 +144,14 @@
   <data name="Click here to Logout" xml:space="preserve">
     <value>Нажмите сюда чтобы выйти </value>
   </data>
+  <data name="d" xml:space="preserve">
+    <value />
+  </data>
   <data name="Delete" xml:space="preserve">
     <value>Удалить</value>
+  </data>
+  <data name="Delete from Wishlist" xml:space="preserve">
+    <value>Удалить из желаемого</value>
   </data>
   <data name="Deleting this data will permanently remove your account, and this cannot be recovered." xml:space="preserve">
     <value>Удаление этих данных приведет к безвозвратному удалению вашей учетной записи, и ее невозможно будет восстановить.</value>
