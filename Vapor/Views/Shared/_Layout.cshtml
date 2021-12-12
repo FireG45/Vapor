@@ -1,12 +1,17 @@
 ﻿
+@using Microsoft.AspNetCore.Mvc.Localization
+@using System.Globalization
+@inject IHtmlLocalizer<SharedResource> Localizer
+
+
 <!DOCTYPE html>
 <script src="https://use.fontawesome.com/d93af8e4ce.js"></script>
 <html lang="ru">
 
 	@{
 	//CultureInfo.CurrentCulture = new CultureInfo("en-US"); CultureInfo.CurrentUICulture = new CultureInfo("en-US");
-
-	}
+	var search = "";
+}
 
 
 <head>
@@ -64,7 +69,7 @@
 		<nav class="navbar navbar-expand-md navbar-dark " style="background-color:#2C2F31">
 			<div class="container-fluid">
 				<a class="navbar-brand" asp-controller="Home" asp-action="Index">
-					Vapor
+					<h3>Vapor</h3>
 				</a>
 				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
@@ -94,7 +99,12 @@
 	</header>
 
 	<div class="container ">
-		<main role="main" class="text-white">
+		<main role="main" class="text-white" >
+			<br />
+			<form class="w-100 me-3 " >
+				<input style="background-color:#2C2F31;border-color: #0f1011; " asp-for="@search" type="search" class="form-control text-white" placeholder="@Localizer["Search"]" aria-label="Search">
+				<input asp-controller="Items" asp-action="Search" asp-route-search="@search" class="btn btn-info" type="submit" hidden>
+			</form>
 			<br />
 			@RenderBody()
 			<br />

@@ -29,15 +29,15 @@
         <div class="col-sm-4">
             @if (Model.Sale == 0)
             {
-                <h4 class="text-center">@Model.Price.ToString("c")</h4>
+                <h4 class="text-left">@Model.Price.ToString("c")</h4>
             }
             else
             {
-                <p class="text-center">
+                <p class="text-left">
                     <a style="font-size:16px ;color:#4cff00; background-color:#1e6500">&nbsp-@sale%&nbsp</a>&nbsp
                     <s>@Model.Price.ToString("c")</s>
                 </p>
-                <h4 class="text-center">@Model.SalePrice().ToString("c")</h4>
+                <h4 class="text-left">@Model.SalePrice().ToString("c")</h4>
 
             }
             <p><a class=" btn btn-outline-danger" asp-controller="Items" asp-action="DeleteFromCart" asp-route-Id="@Model">@Localizer["Delete from cart"]</a></p>

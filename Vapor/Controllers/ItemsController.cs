@@ -259,7 +259,7 @@ namespace Vapor.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> AddReview(Guid id,string username,IFormCollection collection) 
+        public async Task<IActionResult> AddReview(Guid id, string username, IFormCollection collection)
         {
             if (ModelState.IsValid)
             {
@@ -275,7 +275,7 @@ namespace Vapor.Controllers
                 review.Id = Guid.NewGuid();
                 review.Item = _context.Items.FirstOrDefault(item => item.Id == id);
                 if (User.IsInRole("Admin"))
-                    review.Author = rnd[r.Next(0, rnd.Length)]+ r.Next(0, rnd.Length).ToString();
+                    review.Author = rnd[r.Next(0, rnd.Length)] + r.Next(0, rnd.Length).ToString();
                 else
                     review.Author = username;
                 //var item = _context.Items.FirstOrDefault(item => item.Id == id);
@@ -291,7 +291,7 @@ namespace Vapor.Controllers
             return BadRequest();
         }
 
-        public async Task<IActionResult> DeleteReview(Guid revid,Guid itemid)
+        public async Task<IActionResult> DeleteReview(Guid revid, Guid itemid)
         {
             var item = _context.Items.Find(itemid);
             var review = _context.Reviews.Find(revid);
@@ -425,6 +425,20 @@ namespace Vapor.Controllers
             return View(items);
         }
 
+        public async Task<IActionResult> Search(string search)
+        {
+            var items = await _context.Items.ToListAsync<Item>();
+            List<Item> search_items = new();
+            foreach (var item in items)
+            {
+                if (item.Name.ToLower().Contains(search.ToLower()))
+                {
+                    search_items.Add(item);
+                }
+            }
+            ViewData["Search"] = search;
+            return View(search_items);
+        }
 
     }
 }

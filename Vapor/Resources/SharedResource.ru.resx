@@ -150,6 +150,9 @@
   <data name="Delete" xml:space="preserve">
     <value>Удалить</value>
   </data>
+  <data name="Delete from cart" xml:space="preserve">
+    <value>Удалить из корзины</value>
+  </data>
   <data name="Delete from Wishlist" xml:space="preserve">
     <value>Удалить из желаемого</value>
   </data>
@@ -166,7 +169,7 @@
     <value>На первую</value>
   </data>
   <data name="Games with tag" xml:space="preserve">
-    <value>Игры с тэгом</value>
+    <value>Игры с тегом</value>
   </data>
   <data name="Go to cart" xml:space="preserve">
     <value>Перейти к корзине</value>
@@ -201,6 +204,9 @@
   <data name="Manage your account" xml:space="preserve">
     <value>Настройте ваш аккаунт</value>
   </data>
+  <data name="No results found for" xml:space="preserve">
+    <value>Ничего не найдено по запросу</value>
+  </data>
   <data name="of" xml:space="preserve">
     <value>из</value>
   </data>
@@ -233,6 +239,12 @@
   </data>
   <data name="Save" xml:space="preserve">
     <value>Сохранить</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Поиск</value>
+  </data>
+  <data name="Search results for" xml:space="preserve">
+    <value>Результаты поиска по запросу</value>
   </data>
   <data name="Shop cart" xml:space="preserve">
     <value>Корзина</value>

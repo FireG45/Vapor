@@ -65,6 +65,7 @@
 			</a>
 
 			<div class="dropdown-menu " style="overflow:auto" aria-labelledby="dropdownMenuLink">
+				<a class="dropdown-item" asp-controller="Items" asp-route-filterBy="">Любой</a>
 				@foreach (var tag in tags)
 				{
 					<a class="dropdown-item" asp-controller="Items" asp-route-filterBy="@tag.tag">@tag.tag</a>

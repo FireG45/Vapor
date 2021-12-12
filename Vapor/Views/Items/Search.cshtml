@@ -1,0 +1,27 @@
+﻿@model List<Item>
+@using Microsoft.AspNetCore.Mvc.Localization
+@using System.Globalization
+@{
+	string search = ViewData["Search"].ToString();
+}
+
+@inject IHtmlLocalizer<SharedResource> Localizer
+
+@if (Model.Count != 0)
+{
+	<h1>@Localizer["Search results for"] @search :</h1>
+
+	<div class="card" style="background-color: #2C2F31">
+
+		<div class="card-body">
+			@foreach (var item in Model)
+			{
+				<partial name="OneItem" model="item" />
+			}
+		</div>
+	</div>
+}
+else
+{
+	<h1>@Localizer["No results found for"] "@search"</h1>
+}
