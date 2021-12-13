@@ -24,6 +24,10 @@
 	SelectList tagsSelectList = tags != null ? new SelectList(tags, "Id", "tag") : null;
 }
 
+@if (User.IsInRole("Admin"))
+{
+	<div><a asp-action="GenKeys_for_all">GenKeys_for_all</a></div>
+}
 
 <div class="card" style="background-color: #2C2F31">
 
@@ -158,28 +162,28 @@
 	</div>
 
 
-<div class="card-footer">
-	@if (currentPage > 1)
-	{
-		<a class="btn btn-outline-info" asp-action="Index" asp-route-page="1" asp-route-filterBy="@filterBy" asp-route-sort-by="@sortBy"> На первую </a>
-	}
-	@if (currentPage > 1)
-	{
-		<a class="btn btn-outline-info" asp-action="Index" asp-route-page="@(currentPage - 1)" asp-route-filterBy="@filterBy" asp-route-sort-by="@sortBy"> 🠔 </a>
-	}
+	<div class="card-footer">
+		@if (currentPage > 1)
+		{
+			<a class="btn btn-outline-info" asp-action="Index" asp-route-page="1" asp-route-filterBy="@filterBy" asp-route-sort-by="@sortBy"> На первую </a>
+		}
+		@if (currentPage > 1)
+		{
+			<a class="btn btn-outline-info" asp-action="Index" asp-route-page="@(currentPage - 1)" asp-route-filterBy="@filterBy" asp-route-sort-by="@sortBy"> 🠔 </a>
+		}
 
-	@Localizer["Page"]
-	@currentPage
-	@Localizer["of"]
-	@pageCount
+		@Localizer["Page"]
+		@currentPage
+		@Localizer["of"]
+		@pageCount
 
-	@if (currentPage < pageCount)
-	{
-		<a class="btn btn-outline-info" asp-action="Index" asp-route-page="@(currentPage + 1)" asp-route-filterBy="@filterBy" asp-route-sort-by="@sortBy"> ➞ </a>
-	}
-	@if (currentPage < pageCount)
-	{
-		<a class="btn btn-outline-info text-white" asp-action="Index" asp-route-page="@pageCount" asp-route-filterBy="@filterBy" asp-route-sort-by="@sortBy"> На последнюю </a>
-	}
-</div>
+		@if (currentPage < pageCount)
+		{
+			<a class="btn btn-outline-info" asp-action="Index" asp-route-page="@(currentPage + 1)" asp-route-filterBy="@filterBy" asp-route-sort-by="@sortBy"> ➞ </a>
+		}
+		@if (currentPage < pageCount)
+		{
+			<a class="btn btn-outline-info text-white" asp-action="Index" asp-route-page="@pageCount" asp-route-filterBy="@filterBy" asp-route-sort-by="@sortBy"> На последнюю </a>
+		}
+	</div>
 </div>

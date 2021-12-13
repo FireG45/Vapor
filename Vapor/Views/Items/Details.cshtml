@@ -9,12 +9,13 @@
 	//var reviews = ViewData["Reviews"] as List<Review>;
 	//SelectList itemsSelectList = reviews != null ? new SelectList(reviews, "Id", "Name") : null;
 }
+@using System.Text.Json
 @using Vapor.Data
 
 @{
 	var shopcart = ViewBag.SCart as List<Item>;
 	var wishlist = ViewBag.Wlist as List<Item>;
-
+	var count = Model.Keys != null ? JsonSerializer.Deserialize<List<string>>(Model.Keys).Count : 0;
 }
 @{
 	//CultureInfo.CurrentCulture = new CultureInfo("en-US"); CultureInfo.CurrentUICulture = new CultureInfo("en-US");
@@ -125,13 +126,22 @@
 
 						}
 						<div>
-							@if (Model.Id != shopcart.FirstOrDefault(m => m.Id == Model.Id)?.Id)
+							@if (count == 0)
 							{
-								<a class=" btn btn-outline-danger" asp-controller="Items" asp-action="ToCart" asp-route-Id="@Model">@Localizer["Add to cart"]</a>
+								<p>
+									<button disabled class=" btn btn-outline-danger">
+										@Localizer["Not available"]
+									</button>
+								</p>
+
+							}
+							else if (Model.Id != shopcart.FirstOrDefault(m => m.Id == Model.Id)?.Id)
+							{
+							<a class=" btn btn-outline-danger" asp-controller="Items" asp-action="ToCart" asp-route-Id="@Model">@Localizer["Add to cart"]</a>
 							}
 							else
 							{
-								<a class=" btn btn-outline-danger" asp-controller="Items" asp-action="ShopCart" asp-route-Id="@Model">@Localizer["Go to cart"]</a>
+							<a class=" btn btn-outline-danger" asp-controller="Items" asp-action="ShopCart" asp-route-Id="@Model">@Localizer["Go to cart"]</a>
 							}
 							@if (Model.Id != wishlist.FirstOrDefault(m => m.Id == Model.Id)?.Id)
 							{
@@ -195,6 +205,8 @@
 			<div>
 				<a asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
 				<a asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
+				<a asp-action="GenKeys" asp-route-id="@Model.Id">Generate keys</a>
+				<a asp-action="AddKey" asp-route-id="@Model.Id">AddKey</a>
 			</div>
 		}
 	</div>

@@ -394,6 +394,7 @@ namespace Vapor.Controllers
         {
             user = await signInManager.UserManager.GetUserAsync(User);
             List<Item> items;
+            Dictionary<Item, string> d = new();
 
             if (user.ShopCart != null)
                 items = JsonSerializer.Deserialize<List<Item>>(user.ShopCart);
@@ -401,6 +402,20 @@ namespace Vapor.Controllers
                 items = new();
 
             user.ShopCart = null;
+
+
+
+            foreach (Item item in items)
+            {
+                var keys = JsonSerializer.Deserialize<List<string>>(item.Keys);
+                string Key = keys.Last();
+                keys.Remove(Key);
+                d[item] = Key;
+                _context.Items.FirstOrDefault(m => m.Id == item.Id).Keys = JsonSerializer.Serialize(keys);
+                _context.SaveChanges();
+
+            }
+
 
             List<Item> wlist = new();
             foreach (Item i in items)
@@ -422,10 +437,12 @@ namespace Vapor.Controllers
                 user.WishList = null;
             _ucontext.SaveChanges();
 
+            ViewData["Dict"] = d;
+
             return View(items);
         }
 
-        public async Task<IActionResult> Search(string search)
+        public async Task<IActionResult> Search(string search = "")
         {
             var items = await _context.Items.ToListAsync<Item>();
             List<Item> search_items = new();
@@ -440,5 +457,49 @@ namespace Vapor.Controllers
             return View(search_items);
         }
 
+        public async Task<IActionResult> GenKeys(Guid id)
+        {
+            Random random = new();
+            var item = await _context.Items.FirstOrDefaultAsync(i => i.Id == id);
+            List<string> keys;
+            if (item?.Keys != null)
+                keys = JsonSerializer.Deserialize<List<string>>(item.Keys);
+            else
+                keys = new();
+
+            for (int i = 0; i < random.Next(20, 50); i++)
+                keys.Add(Item.KeyGen());
+
+            _context.Items.FirstOrDefault(i => i.Id == id).Keys = JsonSerializer.Serialize(keys);
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToRoute(new { controller = "Items", action = "Details", id = id });
+        }
+
+        public async Task<IActionResult> GenKeys_for_all()
+        {
+            Random random = new();
+
+            foreach (var item in _context.Items)
+            {
+                List<string> keys;
+                if (item?.Keys != null)
+                    keys = JsonSerializer.Deserialize<List<string>>(item.Keys);
+                else
+                    keys = new();
+
+                for (int i = 0; i < random.Next(20, 50); i++)
+                    keys.Add(Item.KeyGen());
+
+                _context.Items.FirstOrDefault(i => i.Id == item.Id).Keys = JsonSerializer.Serialize(keys);
+            }
+
+            
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToRoute(new { controller = "Items"});
+        }
     }
 }

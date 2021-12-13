@@ -1,6 +1,7 @@
 ﻿@model IEnumerable<Item>
 @{
 
+    var Dict = ViewData["Dict"] as Dictionary<Item, string>;
 
     decimal sum = 0;
     ViewData["Title"] = "Итог";
@@ -22,7 +23,7 @@
                                 <div class="col-sm-4">
                                     <a asp-action="Details" asp-route-id="@item.Id"><img class="img-thumbnail" style="background-color: #181A1B;" src="@Html.DisplayFor(modelItem => item.Img)" /><br></a>
                                 </div>
-                                <h3>@Item.KeyGen()-@Item.KeyGen()-@Item.KeyGen()</h3>
+                                <h3>@Dict[item]</h3>
                             </div>
                         </div>
                     </div>

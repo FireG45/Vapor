@@ -15,10 +15,17 @@ namespace Vapor.Models
             var alph = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
             for (int i = 0; i < 5; i++)
                 key += alph[r.Next(0, alph.Length)];
+            key += '-';
+            for (int i = 0; i < 5; i++)
+                key += alph[r.Next(0, alph.Length)];
+            key += '-';
+            for (int i = 0; i < 5; i++)
+                key += alph[r.Next(0, alph.Length)];
             return key;
         }
+
         public Guid Id { get; set; }
-        [Display(Name="Name")]
+        [Display(Name = "Name")]
         public string Name { get; set; }
         [Display(Name = "Description")]
 
@@ -39,6 +46,8 @@ namespace Vapor.Models
         public string Tag3 { set; get; }
 
         public List<Review> Reviews { get; set; }
+
+        public string Keys { get; set; }
 
         public override string ToString()
         {
